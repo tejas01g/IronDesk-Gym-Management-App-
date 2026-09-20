@@ -1,0 +1,79 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isGymOwner(gymId) {
+      return isAuthenticated() && request.auth.uid == gymId;
+    }
+
+    // Main Gym document & subcollections
+    match /gyms/{gymId} {
+      // Allow gym owner full read
+      allow read: if isGymOwner(gymId);
+
+      // Create: Owner can create their gym document
+      // planStatus must be 'trial' or 'pending_verification', never 'active' from client
+      allow create: if isGymOwner(gymId)
+        && request.resource.data.ownerUid == gymId
+        && request.resource.data.gymName is string
+        && request.resource.data.ownerName is string
+        && request.resource.data.phone is string
+        && request.resource.data.city is string
+        && request.resource.data.upiId is string
+        && (request.resource.data.planStatus == 'trial' || request.resource.data.planStatus == 'pending_verification');
+
+      // Update: Owner can update profile or request trial / submit UTR
+      // Forbid client from setting planStatus to 'active'
+      allow update: if isGymOwner(gymId)
+        && (
+          // If planStatus is changing, it CANNOT be changed to 'active' by client
+          request.resource.data.planStatus == resource.data.planStatus ||
+          (
+            request.resource.data.planStatus in ['trial', 'pending_verification'] &&
+            request.resource.data.planStatus != 'active'
+          )
+        );
+
+      allow delete: if false; // Never delete gym root document from client
+
+      // Plans Subcollection
+      match /plans/{planId} {
+        allow read, write: if isGymOwner(gymId);
+      }
+
+      // Members Subcollection
+      match /members/{memberId} {
+        allow read, write: if isGymOwner(gymId);
+      }
+
+      // Payments Subcollection
+      match /payments/{paymentId} {
+        allow read, write: if isGymOwner(gymId);
+      }
+
+      // Attendance Subcollection
+      match /attendance/{dateKey} {
+        allow read, write: if isGymOwner(gymId);
+
+        match /entries/{memberId} {
+          allow read, write: if isGymOwner(gymId);
+        }
+      }
+
+      // Stats Subcollection (summary document)
+      match /stats/{statId} {
+        allow read, write: if isGymOwner(gymId);
+      }
+    }
+
+    // Deny all other unmatched paths
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
