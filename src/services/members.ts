@@ -22,6 +22,12 @@ export interface UpdateMemberInput {
   name?: string;
   phone?: string;
   notes?: string;
+  planId?: string;
+  planName?: string;
+  planPrice?: number;
+  durationDays?: number;
+  expiryDate?: FirebaseFirestoreTypes.Timestamp;
+  status?: MemberStatus;
 }
 
 export interface MemberCursorResult {
@@ -198,33 +204,78 @@ export async function getMembersPaginated(
   cursor: FirebaseFirestoreTypes.QueryDocumentSnapshot | null = null,
   pageSize: number = APP_CONFIG.PAGINATION_LIMIT
 ): Promise<MemberCursorResult> {
-  let query: FirebaseFirestoreTypes.Query = firestore()
-    .collection('gyms')
-    .doc(gymId)
-    .collection('members');
+  try {
+    let query: FirebaseFirestoreTypes.Query = firestore()
+      .collection('gyms')
+      .doc(gymId)
+      .collection('members');
 
-  if (filter !== 'all') {
-    query = query.where('status', '==', filter).orderBy('expiryDate', 'asc');
-  } else {
-    query = query.orderBy('createdAt', 'desc');
+    if (filter !== 'all') {
+      query = query.where('status', '==', filter).orderBy('expiryDate', 'asc');
+    } else {
+      query = query.orderBy('createdAt', 'desc');
+    }
+
+    if (cursor) {
+      query = query.startAfter(cursor);
+    }
+
+    query = query.limit(pageSize);
+    const snapshot = await query.get();
+
+    const members: Member[] = snapshot.docs.map(doc => {
+      const data = doc.data() as Omit<Member, 'id'>;
+      const status = calculateMemberStatus(data.expiryDate);
+      return {
+        id: doc.id,
+        ...data,
+        status,
+      };
+    });
+
+    const lastDoc = snapshot.docs[snapshot.docs.length - 1] || null;
+    const hasMore = snapshot.docs.length === pageSize;
+
+    return { members, lastDoc, hasMore };
+  } catch (error) {
+    console.warn('[getMembersPaginated] Query failed (possible missing index), executing fallback:', error);
+    try {
+      let fallbackQuery: FirebaseFirestoreTypes.Query = firestore()
+        .collection('gyms')
+        .doc(gymId)
+        .collection('members')
+        .orderBy('createdAt', 'desc');
+
+      if (cursor) {
+        fallbackQuery = fallbackQuery.startAfter(cursor);
+      }
+
+      fallbackQuery = fallbackQuery.limit(pageSize * 3);
+      const snapshot = await fallbackQuery.get();
+
+      let allMembers: Member[] = snapshot.docs.map(doc => {
+        const data = doc.data() as Omit<Member, 'id'>;
+        const status = calculateMemberStatus(data.expiryDate);
+        return {
+          id: doc.id,
+          ...data,
+          status,
+        };
+      });
+
+      if (filter !== 'all') {
+        allMembers = allMembers.filter(m => m.status === filter);
+      }
+
+      const lastDoc = snapshot.docs[snapshot.docs.length - 1] || null;
+      const hasMore = snapshot.docs.length >= pageSize;
+
+      return { members: allMembers, lastDoc, hasMore };
+    } catch (fallbackError) {
+      console.warn('[getMembersPaginated] Fallback query error:', fallbackError);
+      return { members: [], lastDoc: null, hasMore: false };
+    }
   }
-
-  if (cursor) {
-    query = query.startAfter(cursor);
-  }
-
-  query = query.limit(pageSize);
-  const snapshot = await query.get();
-
-  const members: Member[] = snapshot.docs.map(doc => ({
-    id: doc.id,
-    ...(doc.data() as Omit<Member, 'id'>),
-  }));
-
-  const lastDoc = snapshot.docs[snapshot.docs.length - 1] || null;
-  const hasMore = snapshot.docs.length === pageSize;
-
-  return { members, lastDoc, hasMore };
 }
 
 /**

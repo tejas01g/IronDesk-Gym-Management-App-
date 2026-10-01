@@ -230,7 +230,17 @@ export const MemberCard: React.FC<MemberCardProps> = ({
               <Text style={styles.collectFeeText}>FEE</Text>
             </TouchableOpacity>
 
-            <ChevronRight size={18} color={colors.borderLight} style={{ marginLeft: 6 }} />
+            <TouchableOpacity
+              onPress={() => {
+                haptic.light();
+                onPress();
+              }}
+              style={styles.chevronBtn}
+              hitSlop={{ top: 12, bottom: 12, left: 10, right: 10 }}
+              activeOpacity={0.7}
+            >
+              <ChevronRight size={20} color={colors.primary} />
+            </TouchableOpacity>
           </View>
         </View>
       </TouchableOpacity>
@@ -392,5 +402,11 @@ const styles = StyleSheet.create({
     color: colors.white,
     marginTop: 4,
     letterSpacing: 0.5,
+  },
+  chevronBtn: {
+    paddingLeft: spacing.sm,
+    paddingVertical: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

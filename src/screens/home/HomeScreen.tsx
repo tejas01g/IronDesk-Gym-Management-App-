@@ -15,7 +15,7 @@ import {
   Settings,
   Plus,
   CreditCard,
-  CalendarCheck,
+  LayoutDashboard,
   TrendingUp,
   AlertTriangle,
   Users,
@@ -58,7 +58,7 @@ export const HomeScreen: React.FC = () => {
   const collectedMonth = statsSummary?.collected?.[currentMonthKey] || 0;
   const pendingMonth = statsSummary?.pending?.[currentMonthKey] || 0;
   const totalMembers = statsSummary?.totalMembers || 0;
-  const presentToday = statsSummary?.presentToday?.[todayDateKey] || 0;
+  const activeMembers = statsSummary?.activeMembers || 0;
 
   // Real-time listener for the stats/summary doc
   useEffect(() => {
@@ -215,11 +215,11 @@ export const HomeScreen: React.FC = () => {
               onPress={() => navigation.navigate('Main', { screen: 'MembersTab' })}
             />
             <StatCard
-              label="PRESENT TODAY"
-              value={presentToday}
+              label="ACTIVE MEMBERS"
+              value={activeMembers}
               icon={CheckCircle2}
               accentColor={colors.success}
-              onPress={() => navigation.navigate('Main', { screen: 'AttendanceTab' })}
+              onPress={() => navigation.navigate('Main', { screen: 'MembersTab' })}
             />
           </View>
         </View>
@@ -260,14 +260,14 @@ export const HomeScreen: React.FC = () => {
               style={styles.actionCard}
               onPress={() => {
                 haptic.medium();
-                navigation.navigate('Main', { screen: 'AttendanceTab' });
+                navigation.navigate('Main', { screen: 'DashboardTab' });
               }}
               activeOpacity={0.85}
             >
               <View style={[styles.actionIconBadge, { backgroundColor: colors.surface }]}>
-                <CalendarCheck size={20} color={colors.info} />
+                <LayoutDashboard size={20} color={colors.info} />
               </View>
-              <Text style={styles.actionCardText}>ATTENDANCE</Text>
+              <Text style={styles.actionCardText}>DASHBOARD</Text>
             </TouchableOpacity>
           </View>
         </View>

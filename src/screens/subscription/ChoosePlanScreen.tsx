@@ -183,7 +183,7 @@ export const ChoosePlanScreen: React.FC = () => {
             <View style={styles.perksList}>
               <View style={styles.perkRow}>
                 <Check size={18} color={colors.primary} />
-                <Text style={styles.perkText}>Unlimited members & attendance tracking</Text>
+                <Text style={styles.perkText}>Unlimited members & revenue analytics</Text>
               </View>
               <View style={styles.perkRow}>
                 <Check size={18} color={colors.primary} />

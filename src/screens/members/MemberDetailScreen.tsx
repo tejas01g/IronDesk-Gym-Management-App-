@@ -114,9 +114,6 @@ export const MemberDetailScreen: React.FC = () => {
   const statusColor = getStatusColor();
   const countdownText = getExpiryCountdownText(member.expiryDate);
 
-  // Generate days in month for attendance grid demo
-  const daysInCurrentMonth = Array.from({ length: 30 }, (_, i) => i + 1);
-
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor={colors.background} />
@@ -228,53 +225,6 @@ export const MemberDetailScreen: React.FC = () => {
             icon={<CreditCard size={18} color={colors.black} />}
             style={styles.renewButton}
           />
-        </Card>
-
-        {/* Attendance Grid (This Month) */}
-        <Card style={styles.cardSection}>
-          <View style={styles.sectionHeaderRow}>
-            <Text style={styles.sectionTitle}>ATTENDANCE (THIS MONTH)</Text>
-            <Calendar size={18} color={colors.primary} />
-          </View>
-
-          <View style={styles.gridContainer}>
-            {daysInCurrentMonth.map((day) => {
-              // Highlight day 1, 3, 5, 8, 12, 15 etc as sample activity
-              const isPresent = day % 3 !== 0;
-              const isToday = day === new Date().getDate();
-
-              return (
-                <View
-                  key={day}
-                  style={[
-                    styles.gridDayBox,
-                    isPresent && styles.gridDayPresent,
-                    isToday && styles.gridDayToday,
-                  ]}
-                >
-                  <Text
-                    style={[
-                      styles.dayText,
-                      isPresent && styles.dayTextPresent,
-                      isToday && styles.dayTextToday,
-                    ]}
-                  >
-                    {day}
-                  </Text>
-                </View>
-              );
-            })}
-          </View>
-          <View style={styles.attendanceLegend}>
-            <View style={styles.legendItem}>
-              <View style={[styles.legendDot, { backgroundColor: colors.primary }]} />
-              <Text style={styles.legendLabel}>Present</Text>
-            </View>
-            <View style={styles.legendItem}>
-              <View style={[styles.legendDot, { backgroundColor: colors.inputBackground }]} />
-              <Text style={styles.legendLabel}>Rest / Absent</Text>
-            </View>
-          </View>
         </Card>
 
         {/* Payment History */}

@@ -5,7 +5,7 @@ export type MainTabParamList = {
   HomeTab: undefined;
   MembersTab: undefined;
   PaymentsTab: undefined;
-  AttendanceTab: undefined;
+  DashboardTab: undefined;
   SettingsTab: undefined;
 };
 

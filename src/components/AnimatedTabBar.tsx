@@ -21,7 +21,7 @@ import {
   Home,
   Users,
   CreditCard,
-  CalendarCheck,
+  LayoutDashboard,
   Settings,
 } from 'lucide-react-native';
 
@@ -33,7 +33,7 @@ const ICONS: Record<string, any> = {
   HomeTab: Home,
   MembersTab: Users,
   PaymentsTab: CreditCard,
-  AttendanceTab: CalendarCheck,
+  DashboardTab: LayoutDashboard,
   SettingsTab: Settings,
 };
 
@@ -41,7 +41,7 @@ const LABELS: Record<string, string> = {
   HomeTab: 'Home',
   MembersTab: 'Members',
   PaymentsTab: 'Payments',
-  AttendanceTab: 'Attendance',
+  DashboardTab: 'Dashboard',
   SettingsTab: 'Settings',
 };
 
