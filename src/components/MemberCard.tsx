@@ -24,7 +24,7 @@ interface MemberCardProps {
   onCollectFee: () => void;
 }
 
-export const MemberCard: React.FC<MemberCardProps> = ({
+const MemberCardComponent: React.FC<MemberCardProps> = ({
   member,
   onPress,
   onCollectFee,
@@ -247,6 +247,8 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     </Swipeable>
   );
 };
+
+export const MemberCard = React.memo(MemberCardComponent);
 
 const styles = StyleSheet.create({
   swipeContainer: {

@@ -9,6 +9,7 @@ import {
   StatusBar,
   Modal,
 } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {
@@ -39,6 +40,7 @@ import { haptic } from '../../utils/haptics';
 type SettingsNavProp = NativeStackNavigationProp<RootStackParamList>;
 
 export const SettingsScreen: React.FC = () => {
+  const insets = useSafeAreaInsets();
   const navigation = useNavigation<SettingsNavProp>();
   const { gym, loadGymData } = useGymStore();
   const logout = useAuthStore((s) => s.logout);
@@ -109,7 +111,7 @@ export const SettingsScreen: React.FC = () => {
   const planStatusLabel = gym?.planStatus?.toUpperCase() || 'TRIAL';
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor={colors.background} />
 
       {/* Header */}
@@ -118,7 +120,12 @@ export const SettingsScreen: React.FC = () => {
         <Text style={styles.subtitle}>GYM PROFILE & PREFERENCES</Text>
       </View>
 
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView
+        contentContainerStyle={[
+          styles.scrollContent,
+          { paddingBottom: 110 + insets.bottom },
+        ]}
+      >
         {/* Gym Profile Summary Card */}
         <Card style={styles.profileCard}>
           <View style={styles.profileRow}>
@@ -292,7 +299,7 @@ export const SettingsScreen: React.FC = () => {
           </View>
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -303,7 +310,7 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.lg,
+    paddingTop: spacing.sm,
     paddingBottom: spacing.sm,
   },
   title: {

@@ -8,6 +8,7 @@ import {
   RefreshControl,
   StatusBar,
 } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import {
@@ -45,6 +46,7 @@ type HomeNavProp = NativeStackNavigationProp<RootStackParamList>;
 
 export const HomeScreen: React.FC = () => {
   useAccessGuard();
+  const insets = useSafeAreaInsets();
   const navigation = useNavigation<HomeNavProp>();
   const { gym, statsSummary, setStatsSummary, loadGymData } = useGymStore();
 
@@ -123,11 +125,14 @@ export const HomeScreen: React.FC = () => {
   const expiringBadgeCount = statsSummary?.expiringCount || 0;
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor={colors.background} />
 
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[
+          styles.scrollContent,
+          { paddingBottom: 110 + insets.bottom },
+        ]}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -402,7 +407,7 @@ export const HomeScreen: React.FC = () => {
           )}
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -413,7 +418,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.lg,
+    paddingTop: spacing.sm,
     paddingBottom: 110,
   },
   header: {

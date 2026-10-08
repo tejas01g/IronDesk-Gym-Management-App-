@@ -15,6 +15,8 @@ import { NotificationsScreen } from '../../screens/notifications/NotificationsSc
 import { ManagePlansScreen } from '../../screens/plans/ManagePlansScreen';
 import { WhatsAppTemplateScreen } from '../../screens/settings/WhatsAppTemplateScreen';
 
+import { colors } from '../../theme';
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const RootNavigator: React.FC = () => {
@@ -24,17 +26,21 @@ export const RootNavigator: React.FC = () => {
       screenOptions={{
         headerShown: false,
         animation: 'slide_from_right',
+        animationDuration: 280,
+        gestureEnabled: true,
+        fullScreenGestureEnabled: true,
+        contentStyle: { backgroundColor: colors.background },
       }}
     >
       <Stack.Screen
         name="Splash"
         component={SplashScreen}
-        options={{ animation: 'fade' }}
+        options={{ animation: 'fade', animationDuration: 350 }}
       />
       <Stack.Screen
         name="Welcome"
         component={WelcomeScreen}
-        options={{ animation: 'fade' }}
+        options={{ animation: 'fade', animationDuration: 300 }}
       />
       <Stack.Screen
         name="Login"
@@ -49,7 +55,7 @@ export const RootNavigator: React.FC = () => {
       <Stack.Screen
         name="ChoosePlan"
         component={ChoosePlanScreen}
-        options={{ animation: 'slide_from_right' }}
+        options={{ animation: 'slide_from_bottom', presentation: 'modal' }}
       />
       <Stack.Screen
         name="SubscriptionLock"
@@ -59,12 +65,16 @@ export const RootNavigator: React.FC = () => {
       <Stack.Screen
         name="Main"
         component={MainTabNavigator}
-        options={{ animation: 'fade' }}
+        options={{ animation: 'fade', animationDuration: 250 }}
       />
       <Stack.Screen
         name="AddMember"
         component={AddMemberScreen}
-        options={{ animation: 'slide_from_bottom' }}
+        options={{
+          animation: 'slide_from_bottom',
+          presentation: 'modal',
+          animationDuration: 260,
+        }}
       />
       <Stack.Screen
         name="MemberDetail"
@@ -74,12 +84,20 @@ export const RootNavigator: React.FC = () => {
       <Stack.Screen
         name="CollectFee"
         component={CollectFeeScreen}
-        options={{ animation: 'slide_from_bottom' }}
+        options={{
+          animation: 'slide_from_bottom',
+          presentation: 'modal',
+          animationDuration: 260,
+        }}
       />
       <Stack.Screen
         name="Notifications"
         component={NotificationsScreen}
-        options={{ animation: 'slide_from_bottom' }}
+        options={{
+          animation: 'slide_from_bottom',
+          presentation: 'modal',
+          animationDuration: 260,
+        }}
       />
       <Stack.Screen
         name="ManagePlans"

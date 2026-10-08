@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FlashList } from '@shopify/flash-list';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -39,6 +40,7 @@ type PaymentsNavProp = NativeStackNavigationProp<RootStackParamList>;
 
 export const PaymentsScreen: React.FC = () => {
   useAccessGuard();
+  const insets = useSafeAreaInsets();
   const navigation = useNavigation<PaymentsNavProp>();
   const { gym, statsSummary } = useGymStore();
 
@@ -159,7 +161,7 @@ export const PaymentsScreen: React.FC = () => {
   );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor={colors.background} />
 
       {/* Header */}
@@ -279,7 +281,10 @@ export const PaymentsScreen: React.FC = () => {
               renderItem={renderPaymentItem}
               keyExtractor={(item) => item.id}
               estimatedItemSize={72}
-              contentContainerStyle={styles.listPadding}
+              contentContainerStyle={[
+                styles.listPadding,
+                { paddingBottom: 110 + insets.bottom },
+              ]}
               refreshing={refreshing}
               onRefresh={() => loadData(true)}
             />
@@ -298,13 +303,16 @@ export const PaymentsScreen: React.FC = () => {
             renderItem={renderPendingItem}
             keyExtractor={(item) => item.id}
             estimatedItemSize={84}
-            contentContainerStyle={styles.listPadding}
+            contentContainerStyle={[
+              styles.listPadding,
+              { paddingBottom: 110 + insets.bottom },
+            ]}
             refreshing={refreshing}
             onRefresh={() => loadData(true)}
           />
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -318,7 +326,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.lg,
+    paddingTop: spacing.sm,
     paddingBottom: spacing.sm,
   },
   title: {

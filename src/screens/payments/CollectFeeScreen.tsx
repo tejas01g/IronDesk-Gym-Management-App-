@@ -10,6 +10,7 @@ import {
   Alert,
   StatusBar,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import QRCode from 'react-native-qrcode-svg';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -178,7 +179,7 @@ export const CollectFeeScreen: React.FC = () => {
   // SUCCESS SCREEN
   if (isSuccess && selectedMember) {
     return (
-      <View style={styles.container}>
+      <SafeAreaView edges={['top', 'bottom', 'left', 'right']} style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor={colors.background} />
         <View style={styles.successWrapper}>
           <Animated.View style={[styles.successIconBadge, animatedCheckStyle]}>
@@ -224,20 +225,21 @@ export const CollectFeeScreen: React.FC = () => {
             style={{ width: '100%' }}
           />
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
-      <StatusBar barStyle="light-content" backgroundColor={colors.background} />
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        keyboardShouldPersistTaps="handled"
+    <SafeAreaView edges={['top', 'bottom', 'left', 'right']} style={styles.container}>
+      <KeyboardAvoidingView
+        style={styles.keyboardContainer}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
+        <StatusBar barStyle="light-content" backgroundColor={colors.background} />
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+        >
         {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity
@@ -456,7 +458,8 @@ export const CollectFeeScreen: React.FC = () => {
           style={styles.submitBtn}
         />
       </ScrollView>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
@@ -465,9 +468,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
+  keyboardContainer: {
+    flex: 1,
+  },
   scrollContent: {
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.lg,
+    paddingTop: spacing.sm,
     paddingBottom: spacing.massive,
   },
   header: {

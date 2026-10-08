@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -108,7 +109,7 @@ export const SplashScreen: React.FC = () => {
   }));
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView edges={['top', 'bottom', 'left', 'right']} style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor={colors.background} />
 
       <Animated.View style={[styles.logoBadge, animatedLogoStyle]}>
@@ -123,7 +124,7 @@ export const SplashScreen: React.FC = () => {
         </View>
         <Text style={styles.tagline}>THE DIGITAL REGISTER FOR INDIAN GYMS</Text>
       </Animated.View>
-    </View>
+    </SafeAreaView>
   );
 };
 

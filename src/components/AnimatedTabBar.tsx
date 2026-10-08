@@ -8,6 +8,7 @@ import {
   Platform,
 } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -123,6 +124,8 @@ export const AnimatedTabBar: React.FC<BottomTabBarProps> = ({
   descriptors,
   navigation,
 }) => {
+  const insets = useSafeAreaInsets();
+  const bottomMargin = Math.max(insets.bottom, 14);
   const totalTabs = state.routes.length;
   const tabWidth = TAB_BAR_WIDTH / totalTabs;
   const indicatorPosition = useSharedValue(state.index * tabWidth);
@@ -140,7 +143,7 @@ export const AnimatedTabBar: React.FC<BottomTabBarProps> = ({
   }));
 
   return (
-    <View style={styles.outerContainer}>
+    <View style={[styles.outerContainer, { bottom: bottomMargin }]}>
       <View style={styles.barContainer}>
         {/* Gliding Lime Indicator */}
         <Animated.View style={[styles.indicatorWrapper, animatedIndicatorStyle]}>

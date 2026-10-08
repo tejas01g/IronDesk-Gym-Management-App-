@@ -8,6 +8,7 @@ import {
   Alert,
   StatusBar,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ArrowLeft, MessageSquare, RotateCcw, Plus } from 'lucide-react-native';
@@ -81,7 +82,7 @@ export const WhatsAppTemplateScreen: React.FC = () => {
   });
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView edges={['top', 'bottom', 'left', 'right']} style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor={colors.background} />
 
       {/* Header */}
@@ -153,7 +154,7 @@ export const WhatsAppTemplateScreen: React.FC = () => {
           style={styles.saveBtn}
         />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.lg,
+    paddingTop: spacing.sm,
     paddingBottom: spacing.sm,
   },
   backButton: {

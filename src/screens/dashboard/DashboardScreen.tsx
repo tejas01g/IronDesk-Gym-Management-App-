@@ -9,6 +9,7 @@ import {
   StatusBar,
   Dimensions,
 } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle, G, Text as SvgText } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -42,6 +43,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 type DashboardNavProp = NativeStackNavigationProp<RootStackParamList>;
 
 export const DashboardScreen: React.FC = () => {
+  const insets = useSafeAreaInsets();
   const navigation = useNavigation<DashboardNavProp>();
   const { gym, statsSummary, loadGymData } = useGymStore();
 
@@ -195,11 +197,14 @@ export const DashboardScreen: React.FC = () => {
       : 0;
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor={colors.background} />
 
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[
+          styles.scrollContent,
+          { paddingBottom: 110 + insets.bottom },
+        ]}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -592,7 +597,7 @@ export const DashboardScreen: React.FC = () => {
           )}
         </Card>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -603,7 +608,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.lg,
+    paddingTop: spacing.sm,
     paddingBottom: 110,
   },
   header: {

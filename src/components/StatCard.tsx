@@ -24,7 +24,7 @@ interface StatCardProps {
   style?: ViewStyle;
 }
 
-export const StatCard: React.FC<StatCardProps> = ({
+const StatCardComponent: React.FC<StatCardProps> = ({
   label,
   value,
   formattedValue,
@@ -38,20 +38,20 @@ export const StatCard: React.FC<StatCardProps> = ({
 
   // Quick count-up effect on mount
   useEffect(() => {
-    let start = 0;
-    const duration = 600;
-    const steps = 15;
-    const increment = value / steps;
-    const stepTime = duration / steps;
-
-    if (value === 0) {
+    if (value === 0 || isNaN(value)) {
       setDisplayNumber(0);
       return;
     }
 
+    let start = 0;
+    const duration = 500;
+    const steps = 15;
+    const increment = value / steps;
+    const stepTime = Math.max(16, duration / steps);
+
     const timer = setInterval(() => {
       start += increment;
-      if (start >= value) {
+      if ((increment >= 0 && start >= value) || (increment < 0 && start <= value)) {
         setDisplayNumber(value);
         clearInterval(timer);
       } else {
@@ -59,7 +59,9 @@ export const StatCard: React.FC<StatCardProps> = ({
       }
     }, stepTime);
 
-    return () => clearInterval(timer);
+    return () => {
+      if (timer) clearInterval(timer);
+    };
   }, [value]);
 
   const handlePressIn = () => {
@@ -116,6 +118,8 @@ export const StatCard: React.FC<StatCardProps> = ({
     </Animated.View>
   );
 };
+
+export const StatCard = React.memo(StatCardComponent);
 
 const styles = StyleSheet.create({
   wrapper: {

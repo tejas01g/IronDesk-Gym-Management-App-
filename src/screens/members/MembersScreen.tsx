@@ -8,6 +8,7 @@ import {
   StatusBar,
   Modal,
 } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FlashList } from '@shopify/flash-list';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -50,6 +51,7 @@ type MembersNavProp = NativeStackNavigationProp<RootStackParamList>;
 
 export const MembersScreen: React.FC = () => {
   useAccessGuard();
+  const insets = useSafeAreaInsets();
   const navigation = useNavigation<MembersNavProp>();
   const { gym, statsSummary, loadGymData } = useGymStore();
 
@@ -203,7 +205,7 @@ export const MembersScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor={colors.background} />
 
       {/* Header */}
@@ -333,7 +335,10 @@ export const MembersScreen: React.FC = () => {
             renderItem={renderMemberItem}
             keyExtractor={(item) => item.id}
             estimatedItemSize={125}
-            contentContainerStyle={styles.listPadding}
+            contentContainerStyle={[
+              styles.listPadding,
+              { paddingBottom: 110 + insets.bottom },
+            ]}
             refreshing={refreshing}
             onRefresh={() => fetchMembers(true)}
           />
@@ -342,7 +347,7 @@ export const MembersScreen: React.FC = () => {
 
       {/* Floating Action Button (FAB) */}
       <TouchableOpacity
-        style={styles.fab}
+        style={[styles.fab, { bottom: 92 + insets.bottom }]}
         activeOpacity={0.85}
         onPress={() => {
           haptic.heavy();
@@ -518,7 +523,7 @@ export const MembersScreen: React.FC = () => {
           </View>
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -532,7 +537,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.lg,
+    paddingTop: spacing.sm,
     paddingBottom: spacing.sm,
   },
   title: {

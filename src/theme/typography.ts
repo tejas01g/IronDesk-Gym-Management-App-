@@ -7,23 +7,23 @@ export const fontFamilies = {
     default: 'sans-serif-condensed',
   }),
   bodyRegular: Platform.select({
-    ios: 'Inter-Regular',
-    android: 'Inter-Regular',
+    ios: 'System',
+    android: 'sans-serif',
     default: 'System',
   }),
   bodyMedium: Platform.select({
-    ios: 'Inter-Medium',
-    android: 'Inter-Medium',
+    ios: 'System',
+    android: 'sans-serif-medium',
     default: 'System',
   }),
   bodySemiBold: Platform.select({
-    ios: 'Inter-SemiBold',
-    android: 'Inter-SemiBold',
+    ios: 'System',
+    android: 'sans-serif-medium',
     default: 'System',
   }),
   bodyBold: Platform.select({
-    ios: 'Inter-Bold',
-    android: 'Inter-Bold',
+    ios: 'System',
+    android: 'sans-serif',
     default: 'System',
   }),
   hero: Platform.select({
@@ -37,8 +37,8 @@ export const fontFamilies = {
     default: 'sans-serif-condensed',
   }),
   tabLabel: Platform.select({
-    ios: 'Inter-Medium',
-    android: 'Inter-Medium',
+    ios: 'System',
+    android: 'sans-serif-medium',
     default: 'System',
   }),
 };

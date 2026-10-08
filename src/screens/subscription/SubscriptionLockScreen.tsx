@@ -8,6 +8,7 @@ import {
   Alert,
   StatusBar,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import QRCode from 'react-native-qrcode-svg';
 import { Lock, ShieldAlert, MessageSquare, ExternalLink, LogOut, RefreshCw } from 'lucide-react-native';
 import { colors, fontFamilies, radius, spacing } from '../../theme';
@@ -86,7 +87,7 @@ export const SubscriptionLockScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView edges={['top', 'bottom', 'left', 'right']} style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor={colors.background} />
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Lock Hero Icon */}
@@ -214,7 +215,7 @@ export const SubscriptionLockScreen: React.FC = () => {
           <Text style={styles.logoutText}>SIGN OUT</Text>
         </TouchableOpacity>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -225,7 +226,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.xxl,
+    paddingTop: spacing.lg,
     paddingBottom: spacing.massive,
     alignItems: 'center',
   },
