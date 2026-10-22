@@ -494,9 +494,10 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontFamily: fontFamilies.heading,
-    fontSize: 22,
+    fontSize: 20,
+    fontWeight: '700',
     color: colors.text,
-    letterSpacing: 1,
+    letterSpacing: -0.3,
   },
   sectionCard: {
     marginBottom: spacing.lg,
@@ -504,8 +505,9 @@ const styles = StyleSheet.create({
   sectionHeading: {
     fontFamily: fontFamilies.heading,
     fontSize: 16,
-    color: colors.primary,
-    letterSpacing: 1,
+    fontWeight: '700',
+    color: colors.text,
+    letterSpacing: -0.2,
     marginBottom: spacing.md,
   },
   selectedMemberRow: {
@@ -517,13 +519,14 @@ const styles = StyleSheet.create({
     fontFamily: fontFamilies.bodyBold,
     fontSize: 11,
     color: colors.textMuted,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   selectedMemberName: {
     fontFamily: fontFamilies.heading,
-    fontSize: 22,
+    fontSize: 18,
+    fontWeight: '600',
     color: colors.text,
-    letterSpacing: 0.8,
+    letterSpacing: -0.2,
   },
   selectedMemberPhone: {
     fontFamily: fontFamilies.bodyRegular,
@@ -537,10 +540,10 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
   },
   changePillText: {
-    fontFamily: fontFamilies.heading,
-    fontSize: 12,
+    fontFamily: fontFamilies.bodyBold,
+    fontSize: 11,
     color: colors.primary,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   memberSelectItem: {
     flexDirection: 'row',
@@ -552,6 +555,7 @@ const styles = StyleSheet.create({
   pickerMemberName: {
     fontFamily: fontFamilies.heading,
     fontSize: 16,
+    fontWeight: '600',
     color: colors.text,
   },
   pickerMemberPhone: {
@@ -567,15 +571,17 @@ const styles = StyleSheet.create({
   planChip: {
     flex: 1,
     minWidth: '45%',
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
     padding: spacing.md,
     borderRadius: radius.card,
-    borderWidth: 1.5,
+    borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
   },
   selectedPlanChip: {
     borderColor: colors.primary,
     backgroundColor: colors.surface,
+    borderTopColor: colors.primary,
   },
   planChipName: {
     fontFamily: fontFamilies.bodyBold,
@@ -586,8 +592,9 @@ const styles = StyleSheet.create({
     color: colors.primary,
   },
   planChipPrice: {
-    fontFamily: fontFamilies.heading,
+    fontFamily: fontFamilies.statNumber,
     fontSize: 18,
+    fontWeight: '700',
     color: colors.text,
     marginTop: 2,
   },
@@ -595,8 +602,9 @@ const styles = StyleSheet.create({
     color: colors.primary,
   },
   currencyPrefix: {
-    fontFamily: fontFamilies.heading,
+    fontFamily: fontFamilies.statNumber,
     fontSize: 20,
+    fontWeight: '700',
     color: colors.primary,
     marginRight: 4,
   },
@@ -616,17 +624,20 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
   expiryPreviewDate: {
-    fontFamily: fontFamilies.heading,
+    fontFamily: fontFamilies.statNumber,
     fontSize: 18,
+    fontWeight: '700',
     color: colors.primary,
-    letterSpacing: 0.5,
   },
   modeTabsRow: {
     flexDirection: 'row',
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
     borderRadius: radius.card,
     padding: 4,
     marginBottom: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
   },
   modeTab: {
     flex: 1,
@@ -639,17 +650,17 @@ const styles = StyleSheet.create({
   activeModeTab: {
     backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: colors.borderLight,
+    borderColor: colors.glassBorderLight,
   },
   modeTabText: {
-    fontFamily: fontFamilies.heading,
-    fontSize: 14,
+    fontFamily: fontFamilies.bodyBold,
+    fontSize: 13,
     color: colors.textMuted,
     marginLeft: spacing.xs,
-    letterSpacing: 0.5,
+    letterSpacing: 0.2,
   },
   activeModeTabText: {
-    color: colors.primary,
+    color: colors.text,
   },
   upiDisplaySection: {
     alignItems: 'center',
@@ -689,22 +700,24 @@ const styles = StyleSheet.create({
   },
   cashNoticeBox: {
     width: '100%',
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
     padding: spacing.xl,
     borderRadius: radius.card,
     alignItems: 'center',
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
   },
   cashNoticeTitle: {
-    fontFamily: fontFamilies.heading,
-    fontSize: 16,
+    fontFamily: fontFamilies.bodyBold,
+    fontSize: 14,
     color: colors.textMuted,
-    letterSpacing: 1,
+    letterSpacing: 0.5,
   },
   cashNoticeAmount: {
-    fontFamily: fontFamilies.hero,
-    fontSize: 44,
+    fontFamily: fontFamilies.statNumber,
+    fontSize: 36,
+    fontWeight: '700',
     color: colors.primary,
     marginVertical: spacing.xs,
   },
@@ -738,9 +751,10 @@ const styles = StyleSheet.create({
   },
   successTitle: {
     fontFamily: fontFamilies.heading,
-    fontSize: 32,
+    fontSize: 26,
+    fontWeight: '700',
     color: colors.text,
-    letterSpacing: 1.5,
+    letterSpacing: -0.3,
   },
   successSubtitle: {
     fontFamily: fontFamilies.bodyRegular,

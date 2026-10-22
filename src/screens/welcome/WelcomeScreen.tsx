@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Users, BellRing, TrendingUp, ChevronRight } from 'lucide-react-native';
-import { colors, fontFamilies, radius, spacing } from '../../theme';
+import { colors, fontFamilies, radius, spacing, shadows } from '../../theme';
 import { RootStackParamList } from '../../app/navigation/types';
 import { Button } from '../../components/Button';
 import { setHasSeenOnboarding } from '../../utils/storage';
@@ -198,27 +198,27 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.md,
   },
   badgePill: {
-    backgroundColor: colors.surface,
+    backgroundColor: colors.glassPill,
     paddingHorizontal: spacing.md,
     paddingVertical: 6,
     borderRadius: radius.pill,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: colors.glassBorderLight,
   },
   badgeText: {
     fontFamily: fontFamilies.bodyBold,
     fontSize: 11,
     color: colors.primary,
-    letterSpacing: 1,
+    letterSpacing: 0.5,
   },
   skipButton: {
     padding: spacing.sm,
   },
   skipText: {
-    fontFamily: fontFamilies.heading,
-    fontSize: 16,
+    fontFamily: fontFamilies.bodyMedium,
+    fontSize: 14,
     color: colors.textMuted,
-    letterSpacing: 1,
+    letterSpacing: 0.3,
   },
   slide: {
     width: SCREEN_WIDTH,
@@ -227,41 +227,44 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.xxl,
   },
   iconOuterCircle: {
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    borderWidth: 2,
-    borderStyle: 'dashed',
+    width: 130,
+    height: 130,
+    borderRadius: 65,
+    borderWidth: 1.5,
+    backgroundColor: colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: spacing.xxxl,
+    marginBottom: spacing.xxl,
+    ...shadows.card,
   },
   iconInnerCircle: {
-    width: 116,
-    height: 116,
-    borderRadius: 58,
+    width: 96,
+    height: 96,
+    borderRadius: 48,
     alignItems: 'center',
     justifyContent: 'center',
   },
   slideTitle: {
-    fontFamily: fontFamilies.hero,
-    fontSize: 38,
-    lineHeight: 40,
+    fontFamily: fontFamilies.heading,
+    fontSize: 28,
+    lineHeight: 34,
+    fontWeight: '700',
     color: colors.text,
     textAlign: 'center',
-    letterSpacing: 1.5,
+    letterSpacing: -0.4,
   },
   slideSubtitle: {
-    fontFamily: fontFamilies.hero,
-    fontSize: 32,
-    lineHeight: 36,
+    fontFamily: fontFamilies.heading,
+    fontSize: 24,
+    lineHeight: 30,
+    fontWeight: '700',
     textAlign: 'center',
-    letterSpacing: 1.5,
-    marginBottom: spacing.lg,
+    letterSpacing: -0.3,
+    marginBottom: spacing.md,
   },
   slideDescription: {
     fontFamily: fontFamilies.bodyRegular,
-    fontSize: 15,
+    fontSize: 14,
     lineHeight: 22,
     color: colors.textSecondary,
     textAlign: 'center',
@@ -278,16 +281,16 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xl,
   },
   dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
     backgroundColor: colors.borderLight,
     marginHorizontal: 4,
   },
   activeDot: {
     width: 24,
-    height: 8,
-    borderRadius: 4,
+    height: 6,
+    borderRadius: 3,
     backgroundColor: colors.primary,
   },
 });

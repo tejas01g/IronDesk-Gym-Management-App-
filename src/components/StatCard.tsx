@@ -96,24 +96,25 @@ const StatCardComponent: React.FC<StatCardProps> = ({
         style={[
           styles.card,
           {
-            borderTopColor: accentColor,
-            borderTopWidth: 2,
+            borderTopColor: colors.glassBorderLight,
             backgroundColor: colors.surface,
           },
         ]}
       >
         <View style={styles.topRow}>
-          <Text numberOfLines={1} style={styles.label}>
-            {label}
-          </Text>
-          <View style={[styles.iconBadge, { backgroundColor: `${accentColor}18` }]}>
-            <IconComponent size={16} color={accentColor} />
+          <View style={[styles.iconBadge, { backgroundColor: `${accentColor}18`, borderColor: `${accentColor}35` }]}>
+            <IconComponent size={18} color={accentColor} />
           </View>
         </View>
 
-        <Text numberOfLines={1} style={[styles.valueText, { color: colors.text }]}>
-          {displayText}
-        </Text>
+        <View style={styles.contentBlock}>
+          <Text numberOfLines={1} style={[styles.valueText, { color: colors.text }]}>
+            {displayText}
+          </Text>
+          <Text numberOfLines={1} style={styles.label}>
+            {label}
+          </Text>
+        </View>
       </TouchableOpacity>
     </Animated.View>
   );
@@ -132,34 +133,37 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     borderWidth: 1,
     borderColor: colors.border,
-    minHeight: 104,
+    minHeight: 116,
     justifyContent: 'space-between',
   },
   topRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: spacing.xs,
+    justifyContent: 'flex-start',
+    marginBottom: spacing.sm,
+  },
+  contentBlock: {
+    marginTop: spacing.xs,
   },
   label: {
-    fontFamily: fontFamilies.bodyBold,
-    fontSize: 11,
-    color: colors.textMuted,
-    letterSpacing: 0.5,
-    textTransform: 'uppercase',
-    flex: 1,
-    marginRight: 4,
+    fontFamily: fontFamilies.bodyMedium,
+    fontSize: 12,
+    color: colors.textSecondary,
+    letterSpacing: 0.2,
+    marginTop: 2,
   },
   iconBadge: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   valueText: {
     fontFamily: fontFamilies.statNumber,
-    fontSize: 28,
-    letterSpacing: 0.5,
+    fontSize: 26,
+    fontWeight: '700',
+    letterSpacing: -0.3,
   },
 });

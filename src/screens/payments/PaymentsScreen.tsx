@@ -21,7 +21,7 @@ import {
   Banknote,
 } from 'lucide-react-native';
 import { addMonths, subMonths, format } from 'date-fns';
-import { colors, fontFamilies, radius, spacing } from '../../theme';
+import { colors, fontFamilies, radius, spacing, shadows } from '../../theme';
 import { RootStackParamList } from '../../app/navigation/types';
 import { Payment, Member } from '../../types/models';
 import { getPaymentsPaginated } from '../../services/payments';
@@ -347,15 +347,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.primary,
     paddingHorizontal: spacing.md,
-    paddingVertical: 8,
+    paddingVertical: 7,
     borderRadius: radius.pill,
   },
   collectHeaderText: {
-    fontFamily: fontFamilies.heading,
-    fontSize: 13,
-    color: colors.black,
+    fontFamily: fontFamilies.bodyBold,
+    fontSize: 12,
+    color: colors.white,
     marginLeft: 4,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   totalsCardWrapper: {
     paddingHorizontal: spacing.lg,
@@ -375,13 +375,16 @@ const styles = StyleSheet.create({
   arrowBtn: {
     padding: 6,
     borderRadius: radius.pill,
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   monthTitle: {
     fontFamily: fontFamilies.heading,
     fontSize: 16,
+    fontWeight: '700',
     color: colors.text,
-    letterSpacing: 1,
+    letterSpacing: -0.2,
   },
   statsSplitRow: {
     flexDirection: 'row',
@@ -401,23 +404,27 @@ const styles = StyleSheet.create({
     fontFamily: fontFamilies.bodyBold,
     fontSize: 11,
     color: colors.textMuted,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   statCollectedValue: {
-    fontFamily: fontFamilies.hero,
-    fontSize: 28,
+    fontFamily: fontFamilies.statNumber,
+    fontSize: 26,
+    fontWeight: '700',
     color: colors.primary,
     marginTop: 2,
+    letterSpacing: -0.3,
   },
   statPendingValue: {
-    fontFamily: fontFamilies.hero,
-    fontSize: 28,
+    fontFamily: fontFamilies.statNumber,
+    fontSize: 26,
+    fontWeight: '700',
     color: colors.secondary,
     marginTop: 2,
+    letterSpacing: -0.3,
   },
   segmentContainer: {
     flexDirection: 'row',
-    backgroundColor: colors.surface,
+    backgroundColor: colors.glassPill,
     borderRadius: radius.card,
     marginHorizontal: spacing.lg,
     marginTop: spacing.md,
@@ -425,6 +432,7 @@ const styles = StyleSheet.create({
     padding: 4,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
   },
   segmentTab: {
     flex: 1,
@@ -434,18 +442,18 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
   },
   activeSegment: {
-    backgroundColor: colors.elevated,
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: colors.borderLight,
+    borderColor: colors.glassBorderLight,
   },
   segmentText: {
-    fontFamily: fontFamilies.heading,
+    fontFamily: fontFamilies.bodyBold,
     fontSize: 13,
     color: colors.textMuted,
-    letterSpacing: 0.8,
+    letterSpacing: 0.2,
   },
   activeSegmentText: {
-    color: colors.primary,
+    color: colors.text,
   },
   skeletonList: {
     paddingHorizontal: spacing.lg,
@@ -469,6 +477,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
+    ...shadows.card,
   },
   paymentMainInfo: {
     flexDirection: 'row',
@@ -479,16 +489,19 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
     alignItems: 'center',
     justifyContent: 'center',
   },
   paymentMemberName: {
     fontFamily: fontFamilies.heading,
-    fontSize: 17,
+    fontSize: 16,
+    fontWeight: '600',
     color: colors.text,
+    letterSpacing: -0.2,
   },
   paymentDate: {
     fontFamily: fontFamilies.bodyRegular,
@@ -499,8 +512,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   amountText: {
-    fontFamily: fontFamilies.heading,
-    fontSize: 20,
+    fontFamily: fontFamilies.statNumber,
+    fontSize: 18,
+    fontWeight: '700',
     color: colors.primary,
   },
   paidBadge: {
@@ -526,11 +540,15 @@ const styles = StyleSheet.create({
     borderLeftColor: colors.danger,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
+    ...shadows.card,
   },
   pendingMemberName: {
     fontFamily: fontFamilies.heading,
-    fontSize: 18,
+    fontSize: 16,
+    fontWeight: '600',
     color: colors.text,
+    letterSpacing: -0.2,
   },
   pendingPlanText: {
     fontFamily: fontFamilies.bodyRegular,
@@ -548,13 +566,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.primary,
     paddingHorizontal: spacing.md,
-    paddingVertical: 8,
+    paddingVertical: 7,
     borderRadius: radius.pill,
   },
   collectMiniText: {
-    fontFamily: fontFamilies.heading,
-    fontSize: 12,
-    color: colors.black,
+    fontFamily: fontFamilies.bodyBold,
+    fontSize: 11,
+    color: colors.white,
     marginLeft: 4,
   },
 });

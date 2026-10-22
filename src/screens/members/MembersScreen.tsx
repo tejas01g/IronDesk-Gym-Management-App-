@@ -27,7 +27,7 @@ import {
   FileText,
 } from 'lucide-react-native';
 import firestore from '@react-native-firebase/firestore';
-import { colors, fontFamilies, radius, spacing } from '../../theme';
+import { colors, fontFamilies, radius, spacing, shadows } from '../../theme';
 import { RootStackParamList } from '../../app/navigation/types';
 import { Member, MemberStatus } from '../../types/models';
 import { MemberCard } from '../../components/MemberCard';
@@ -250,7 +250,11 @@ export const MembersScreen: React.FC = () => {
 
       {/* Filter Chips - Guaranteed Live Working Filter */}
       <View style={styles.filterSection}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.filterScrollContent}
+        >
           <Chip
             label="ALL"
             count={filterCounts.all}
@@ -542,15 +546,15 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: fontFamilies.heading,
-    fontSize: 28,
+    fontSize: 24,
+    fontWeight: '700',
     color: colors.text,
-    letterSpacing: 1.2,
+    letterSpacing: -0.3,
   },
   subtitle: {
-    fontFamily: fontFamilies.bodyBold,
-    fontSize: 11,
+    fontFamily: fontFamilies.bodyRegular,
+    fontSize: 13,
     color: colors.textMuted,
-    letterSpacing: 1,
     marginTop: 2,
   },
   addHeaderBtn: {
@@ -558,15 +562,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.primary,
     paddingHorizontal: spacing.md,
-    paddingVertical: 8,
+    paddingVertical: 7,
     borderRadius: radius.pill,
   },
   addHeaderText: {
-    fontFamily: fontFamilies.heading,
-    fontSize: 13,
-    color: colors.black,
+    fontFamily: fontFamilies.bodyBold,
+    fontSize: 12,
+    color: colors.white,
     marginLeft: 4,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   searchSection: {
     paddingHorizontal: spacing.lg,
@@ -576,8 +580,10 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xs,
   },
   filterSection: {
-    paddingLeft: spacing.lg,
     marginVertical: spacing.sm,
+  },
+  filterScrollContent: {
+    paddingHorizontal: spacing.lg,
   },
   listContainer: {
     flex: 1,
@@ -591,31 +597,32 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 92,
     right: spacing.lg,
-    width: 58,
-    height: 58,
-    borderRadius: 29,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
     backgroundColor: colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 8,
     shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
+    shadowOpacity: 0.45,
+    shadowRadius: 10,
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    backgroundColor: colors.backdrop,
     justifyContent: 'flex-end',
   },
   modalSheet: {
-    backgroundColor: colors.surface,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
+    backgroundColor: colors.elevated,
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
     padding: spacing.lg,
     paddingBottom: spacing.xl,
-    borderTopWidth: 1.5,
-    borderColor: colors.borderAccent,
+    borderTopWidth: 1,
+    borderColor: colors.glassHighlight,
+    ...shadows.cardElevated,
   },
   modalHeaderRow: {
     flexDirection: 'row',
@@ -625,9 +632,10 @@ const styles = StyleSheet.create({
   },
   modalMemberName: {
     fontFamily: fontFamilies.heading,
-    fontSize: 22,
+    fontSize: 20,
+    fontWeight: '700',
     color: colors.text,
-    letterSpacing: 0.8,
+    letterSpacing: -0.2,
   },
   modalMemberPhone: {
     fontFamily: fontFamilies.bodyRegular,
@@ -639,17 +647,20 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
+    borderWidth: 1,
+    borderColor: colors.border,
     alignItems: 'center',
     justifyContent: 'center',
   },
   modalPlanCard: {
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
     borderRadius: radius.card,
     padding: spacing.md,
     marginBottom: spacing.md,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
   },
   modalPlanTop: {
     flexDirection: 'row',
@@ -661,16 +672,18 @@ const styles = StyleSheet.create({
     fontFamily: fontFamilies.bodyBold,
     fontSize: 10,
     color: colors.textMuted,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   modalPlanName: {
     fontFamily: fontFamilies.heading,
     fontSize: 16,
+    fontWeight: '600',
     color: colors.text,
   },
   modalPlanPrice: {
-    fontFamily: fontFamilies.heading,
+    fontFamily: fontFamilies.statNumber,
     fontSize: 20,
+    fontWeight: '700',
     color: colors.primary,
   },
   modalDatesRow: {
@@ -706,10 +719,12 @@ const styles = StyleSheet.create({
   modalNotesBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
     padding: spacing.sm,
     borderRadius: radius.card,
     marginBottom: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   modalNotesText: {
     fontFamily: fontFamilies.bodyRegular,
@@ -729,17 +744,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 42,
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
     borderRadius: radius.card,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
   },
   modalCallText: {
-    fontFamily: fontFamilies.heading,
+    fontFamily: fontFamilies.bodyBold,
     fontSize: 12,
     color: colors.text,
     marginLeft: 6,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   modalWhatsAppBtn: {
     flex: 1,
@@ -747,17 +763,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 42,
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
     borderRadius: radius.card,
     borderWidth: 1,
-    borderColor: `${colors.whatsapp}40`,
+    borderColor: `${colors.whatsapp}50`,
   },
   modalWhatsAppText: {
-    fontFamily: fontFamilies.heading,
+    fontFamily: fontFamilies.bodyBold,
     fontSize: 12,
     color: colors.whatsapp,
     marginLeft: 6,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   modalActionButtons: {
     marginTop: spacing.xs,

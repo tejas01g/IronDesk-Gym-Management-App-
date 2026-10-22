@@ -13,7 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ArrowLeft, Plus, Edit2, Trash2, CheckCircle2, X } from 'lucide-react-native';
-import { colors, fontFamilies, radius, spacing } from '../../theme';
+import { colors, fontFamilies, radius, spacing, shadows } from '../../theme';
 import { RootStackParamList } from '../../app/navigation/types';
 import { MembershipPlan } from '../../types/models';
 import {
@@ -277,17 +277,19 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: radius.pill,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.glassPill,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
     alignItems: 'center',
     justifyContent: 'center',
   },
   headerTitle: {
     fontFamily: fontFamilies.heading,
-    fontSize: 22,
+    fontSize: 20,
+    fontWeight: '700',
     color: colors.text,
-    letterSpacing: 1,
+    letterSpacing: -0.3,
   },
   addButton: {
     width: 44,
@@ -312,6 +314,12 @@ const styles = StyleSheet.create({
   planCard: {
     marginBottom: spacing.md,
     padding: spacing.md,
+    backgroundColor: colors.surface,
+    borderRadius: radius.card,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
+    ...shadows.card,
   },
   planRow: {
     flexDirection: 'row',
@@ -320,9 +328,10 @@ const styles = StyleSheet.create({
   },
   planName: {
     fontFamily: fontFamilies.heading,
-    fontSize: 20,
+    fontSize: 17,
+    fontWeight: '600',
     color: colors.text,
-    letterSpacing: 0.5,
+    letterSpacing: -0.2,
   },
   planDetails: {
     fontFamily: fontFamilies.bodyMedium,
@@ -339,9 +348,10 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -354,13 +364,15 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modalSheet: {
-    backgroundColor: colors.surface,
-    borderTopLeftRadius: radius.cardLarge,
-    borderTopRightRadius: radius.cardLarge,
+    backgroundColor: colors.elevated,
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
     padding: spacing.xl,
     paddingBottom: spacing.xxxl,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassHighlight,
+    ...shadows.cardElevated,
   },
   modalHeader: {
     flexDirection: 'row',
@@ -370,9 +382,10 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontFamily: fontFamilies.heading,
-    fontSize: 22,
+    fontSize: 20,
+    fontWeight: '700',
     color: colors.text,
-    letterSpacing: 1,
+    letterSpacing: -0.2,
   },
   modalRow: {
     flexDirection: 'row',

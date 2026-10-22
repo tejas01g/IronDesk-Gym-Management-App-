@@ -11,7 +11,7 @@ import Animated, {
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { Dumbbell, Zap } from 'lucide-react-native';
-import { colors, fontFamilies, spacing } from '../../theme';
+import { colors, fontFamilies, spacing, radius, shadows } from '../../theme';
 import { RootStackParamList } from '../../app/navigation/types';
 import { hasSeenOnboarding } from '../../utils/storage';
 import { getCurrentUser } from '../../services/auth';
@@ -140,12 +140,14 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 30,
-    backgroundColor: colors.surface,
-    borderWidth: 2,
+    backgroundColor: colors.glassPill,
+    borderWidth: 1,
     borderColor: colors.primary,
+    borderTopColor: colors.glassBorderLight,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: spacing.xl,
+    ...shadows.card,
   },
   textWrapper: {
     alignItems: 'center',
@@ -156,9 +158,10 @@ const styles = StyleSheet.create({
   },
   brandTitle: {
     fontFamily: fontFamilies.heading,
-    fontSize: 44,
+    fontSize: 36,
+    fontWeight: '700',
     color: colors.text,
-    letterSpacing: 2,
+    letterSpacing: -0.5,
   },
   brandAccent: {
     color: colors.primary,
@@ -167,10 +170,10 @@ const styles = StyleSheet.create({
     marginLeft: 6,
   },
   tagline: {
-    fontFamily: fontFamilies.bodyBold,
+    fontFamily: fontFamilies.bodyMedium,
     fontSize: 12,
     color: colors.textMuted,
-    letterSpacing: 1.5,
+    letterSpacing: 0.5,
     marginTop: spacing.xs,
     textAlign: 'center',
   },

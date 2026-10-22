@@ -225,17 +225,19 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: radius.pill,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.glassPill,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
     alignItems: 'center',
     justifyContent: 'center',
   },
   headerTitle: {
     fontFamily: fontFamilies.heading,
-    fontSize: 22,
+    fontSize: 20,
+    fontWeight: '700',
     color: colors.text,
-    letterSpacing: 1,
+    letterSpacing: -0.3,
   },
   scrollContent: {
     paddingHorizontal: spacing.lg,
@@ -256,8 +258,9 @@ const styles = StyleSheet.create({
   alertTitle: {
     fontFamily: fontFamilies.heading,
     fontSize: 16,
+    fontWeight: '600',
     color: colors.text,
-    letterSpacing: 0.5,
+    letterSpacing: -0.2,
   },
   alertSub: {
     fontFamily: fontFamilies.bodyRegular,
@@ -277,7 +280,7 @@ const styles = StyleSheet.create({
   remindBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
     paddingHorizontal: spacing.md,
     paddingVertical: 6,
     borderRadius: radius.pill,
@@ -285,11 +288,11 @@ const styles = StyleSheet.create({
     borderColor: `${colors.whatsapp}40`,
   },
   remindBtnText: {
-    fontFamily: fontFamilies.heading,
+    fontFamily: fontFamilies.bodyBold,
     fontSize: 11,
     color: colors.whatsapp,
     marginLeft: 4,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   collectBtn: {
     flexDirection: 'row',
@@ -300,10 +303,10 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
   },
   collectBtnText: {
-    fontFamily: fontFamilies.heading,
+    fontFamily: fontFamilies.bodyBold,
     fontSize: 11,
-    color: colors.black,
+    color: colors.white,
     marginLeft: 4,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
 });

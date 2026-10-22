@@ -393,7 +393,7 @@ export const AddMemberScreen: React.FC = () => {
               style={styles.addPlanHeaderBtn}
               activeOpacity={0.8}
             >
-              <Plus size={14} color={colors.black} />
+              <Plus size={14} color={colors.white} />
               <Text style={styles.addPlanBtnText}>+ ADD PLAN</Text>
             </TouchableOpacity>
           </View>
@@ -786,17 +786,19 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: radius.pill,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.glassPill,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
     alignItems: 'center',
     justifyContent: 'center',
   },
   headerTitle: {
     fontFamily: fontFamilies.heading,
-    fontSize: 22,
+    fontSize: 20,
+    fontWeight: '700',
     color: colors.text,
-    letterSpacing: 1,
+    letterSpacing: -0.3,
   },
   deleteHeaderButton: {
     width: 44,
@@ -814,8 +816,9 @@ const styles = StyleSheet.create({
   cardHeading: {
     fontFamily: fontFamilies.heading,
     fontSize: 16,
-    color: colors.primary,
-    letterSpacing: 1,
+    fontWeight: '700',
+    color: colors.text,
+    letterSpacing: -0.2,
     marginBottom: spacing.md,
   },
   cardHeaderFlex: {
@@ -829,21 +832,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.primary,
     paddingHorizontal: spacing.sm,
-    paddingVertical: 4,
+    paddingVertical: 5,
     borderRadius: radius.pill,
   },
   addPlanBtnText: {
-    fontFamily: fontFamilies.heading,
+    fontFamily: fontFamilies.bodyBold,
     fontSize: 11,
-    color: colors.black,
+    color: colors.white,
     marginLeft: 3,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   sectionSubLabel: {
     fontFamily: fontFamilies.bodyBold,
     fontSize: 11,
     color: colors.textMuted,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
     marginBottom: spacing.xs,
   },
   prefixText: {
@@ -862,16 +865,18 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   planOption: {
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
     borderRadius: radius.card,
     padding: spacing.md,
     marginBottom: spacing.sm,
-    borderWidth: 1.5,
+    borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
   },
   selectedPlanOption: {
     borderColor: colors.primary,
     backgroundColor: colors.surface,
+    borderTopColor: colors.primary,
   },
   planInfoRow: {
     flexDirection: 'row',
@@ -906,8 +911,9 @@ const styles = StyleSheet.create({
     color: colors.primary,
   },
   planPriceText: {
-    fontFamily: fontFamilies.heading,
+    fontFamily: fontFamilies.statNumber,
     fontSize: 18,
+    fontWeight: '700',
     color: colors.text,
   },
   selectedPlanPriceText: {

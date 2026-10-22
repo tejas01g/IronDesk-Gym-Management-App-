@@ -6,7 +6,7 @@ import {
   Modal,
   TouchableOpacity,
 } from 'react-native';
-import { colors, radius, spacing, fontFamilies } from '../theme';
+import { colors, radius, spacing, fontFamilies, shadows } from '../theme';
 import { Button } from './Button';
 import { AlertTriangle } from 'lucide-react-native';
 
@@ -91,29 +91,33 @@ const styles = StyleSheet.create({
   },
   dialogCard: {
     width: '100%',
-    backgroundColor: colors.surface,
-    borderRadius: radius.card,
+    backgroundColor: colors.elevated,
+    borderRadius: radius.cardLarge,
     padding: spacing.xl,
     alignItems: 'center',
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassHighlight,
+    ...shadows.cardElevated,
   },
   iconCircle: {
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: spacing.md,
   },
   title: {
     fontFamily: fontFamilies.heading,
-    fontSize: 22,
+    fontSize: 20,
+    fontWeight: '700',
     color: colors.text,
-    letterSpacing: 0.8,
+    letterSpacing: -0.2,
     textAlign: 'center',
     marginBottom: spacing.xs,
   },
@@ -137,9 +141,9 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
   },
   cancelText: {
-    fontFamily: fontFamilies.heading,
+    fontFamily: fontFamilies.bodyMedium,
     fontSize: 14,
     color: colors.textMuted,
-    letterSpacing: 0.5,
+    letterSpacing: 0.2,
   },
 });

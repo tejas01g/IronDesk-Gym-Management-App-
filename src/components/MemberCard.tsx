@@ -1,13 +1,18 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  Animated as RNAnimated,
 } from 'react-native';
-import Swipeable, { SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
-import { Phone, MessageSquare, CreditCard, ChevronRight } from 'lucide-react-native';
+import {
+  Phone,
+  MessageSquare,
+  CreditCard,
+  ChevronRight,
+  Clock,
+  Calendar,
+} from 'lucide-react-native';
 import { colors, radius, spacing, fontFamilies } from '../theme';
 import { Member } from '../types/models';
 import { formatDate } from '../utils/dates';
@@ -24,13 +29,19 @@ interface MemberCardProps {
   onCollectFee: () => void;
 }
 
+const getInitials = (name: string): string => {
+  if (!name) return 'M';
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+};
+
 const MemberCardComponent: React.FC<MemberCardProps> = ({
   member,
   onPress,
   onCollectFee,
 }) => {
   const gym = useGymStore((s) => s.gym);
-  const swipeableRef = useRef<SwipeableMethods>(null);
 
   const getStatusColor = () => {
     switch (member.status) {
@@ -57,7 +68,6 @@ const MemberCardComponent: React.FC<MemberCardProps> = ({
   };
 
   const handleWhatsAppRemind = async () => {
-    swipeableRef.current?.close();
     haptic.medium();
 
     const upiLink = generateUpiUrl({
@@ -80,113 +90,92 @@ const MemberCardComponent: React.FC<MemberCardProps> = ({
     await openWhatsApp(member.phone, message);
   };
 
-  const renderLeftActions = (
-    _progress: any,
-    dragX: any
-  ) => {
-    const trans = dragX?.interpolate
-      ? dragX.interpolate({
-          inputRange: [0, 80],
-          outputRange: [-20, 0],
-          extrapolate: 'clamp',
-        })
-      : 0;
-
-    return (
-      <TouchableOpacity
-        style={styles.leftAction}
-        onPress={handleWhatsAppRemind}
-        activeOpacity={0.8}
-      >
-        <RNAnimated.View style={{ transform: [{ translateX: trans }], alignItems: 'center' }}>
-          <MessageSquare size={22} color={colors.white} />
-          <Text style={styles.actionText}>WHATSAPP</Text>
-        </RNAnimated.View>
-      </TouchableOpacity>
-    );
-  };
-
-  const renderRightActions = (
-    _progress: any,
-    dragX: any
-  ) => {
-    const trans = dragX?.interpolate
-      ? dragX.interpolate({
-          inputRange: [-80, 0],
-          outputRange: [0, 20],
-          extrapolate: 'clamp',
-        })
-      : 0;
-
-    return (
-      <TouchableOpacity
-        style={styles.rightAction}
-        onPress={() => {
-          swipeableRef.current?.close();
-          onCollectFee();
-        }}
-        activeOpacity={0.8}
-      >
-        <RNAnimated.View style={{ transform: [{ translateX: trans }], alignItems: 'center' }}>
-          <CreditCard size={22} color={colors.black} />
-          <Text style={[styles.actionText, { color: colors.black }]}>COLLECT</Text>
-        </RNAnimated.View>
-      </TouchableOpacity>
-    );
-  };
-
   const statusColor = getStatusColor();
   const countdownText = getExpiryCountdownText(member.expiryDate);
+  const initials = getInitials(member.name);
 
   return (
-    <Swipeable
-      ref={swipeableRef}
-      friction={2}
-      leftThreshold={40}
-      rightThreshold={40}
-      renderLeftActions={renderLeftActions}
-      renderRightActions={renderRightActions}
-      containerStyle={styles.swipeContainer}
+    <TouchableOpacity
+      activeOpacity={0.88}
+      onPress={() => {
+        haptic.light();
+        onPress();
+      }}
+      style={styles.card}
     >
-      <TouchableOpacity
-        activeOpacity={0.9}
-        onPress={() => {
-          haptic.light();
-          onPress();
-        }}
-        style={[
-          styles.card,
-          { borderLeftColor: statusColor, borderLeftWidth: 4 },
-        ]}
-      >
-        <View style={styles.topRow}>
-          {/* Member Name & Phone */}
-          <View style={styles.nameBlock}>
+      {/* Top Row: Avatar + Member Info + Status Badge */}
+      <View style={styles.topSection}>
+        {/* Left: Avatar with Status Indicator Dot */}
+        <View style={styles.avatarWrapper}>
+          <View
+            style={[
+              styles.avatarBox,
+              {
+                borderColor: `${statusColor}40`,
+                backgroundColor: `${statusColor}10`,
+              },
+            ]}
+          >
+            <Text style={[styles.avatarText, { color: colors.text }]}>{initials}</Text>
+          </View>
+          <View style={[styles.statusIndicatorDot, { backgroundColor: statusColor }]} />
+        </View>
+
+        {/* Center/Info: Name and Phone */}
+        <View style={styles.infoBlock}>
+          <View style={styles.nameRow}>
             <Text numberOfLines={1} style={styles.memberName}>
               {member.name}
             </Text>
-            <Text style={styles.memberPhone}>{member.phone}</Text>
+
+            {/* Status Badge */}
+            <View
+              style={[
+                styles.statusBadge,
+                {
+                  backgroundColor: `${statusColor}18`,
+                  borderColor: `${statusColor}40`,
+                },
+              ]}
+            >
+              <View style={[styles.statusDot, { backgroundColor: statusColor }]} />
+              <Text style={[styles.statusText, { color: statusColor }]}>
+                {getStatusLabel()}
+              </Text>
+            </View>
           </View>
 
-          {/* Status Badge */}
-          <View
-            style={[
-              styles.statusBadge,
-              { backgroundColor: `${statusColor}20`, borderColor: `${statusColor}60` },
-            ]}
-          >
-            <View style={[styles.statusDot, { backgroundColor: statusColor }]} />
-            <Text style={[styles.statusText, { color: statusColor }]}>
-              {getStatusLabel()}
-            </Text>
-          </View>
+          <Text style={styles.memberPhone}>{member.phone}</Text>
+        </View>
+      </View>
+
+      {/* Middle Row: Plan Chip & Expiry Countdown Tag */}
+      <View style={styles.middleRow}>
+        <View style={styles.planBadge}>
+          <Text numberOfLines={1} style={styles.planName}>
+            {member.planName}
+          </Text>
+          <Text style={styles.planDot}>•</Text>
+          <Text style={styles.planPrice}>{formatINR(member.planPrice)}</Text>
         </View>
 
-        {/* Plan & Expiry Details */}
-        <View style={styles.middleRow}>
-          <Text style={styles.planName}>
-            {member.planName} • <Text style={styles.planPrice}>{formatINR(member.planPrice)}</Text>
-          </Text>
+        <View
+          style={[
+            styles.countdownBadge,
+            member.status === 'expired' && styles.countdownExpiredBadge,
+            member.status === 'expiring' && styles.countdownExpiringBadge,
+          ]}
+        >
+          <Clock
+            size={11}
+            color={
+              member.status === 'expired'
+                ? colors.danger
+                : member.status === 'expiring'
+                ? colors.secondary
+                : colors.textMuted
+            }
+          />
           <Text
             style={[
               styles.countdownText,
@@ -197,131 +186,201 @@ const MemberCardComponent: React.FC<MemberCardProps> = ({
             {countdownText}
           </Text>
         </View>
+      </View>
 
-        {/* Action Row */}
-        <View style={styles.bottomRow}>
+      {/* Bottom Row: Date & Action Buttons */}
+      <View style={styles.bottomRow}>
+        <View style={styles.expiryDateWrap}>
+          <Calendar size={12} color={colors.textMuted} />
           <Text style={styles.expiryDateLabel}>
-            Expiry: <Text style={styles.expiryDate}>{formatDate(member.expiryDate)}</Text>
+            Expires: <Text style={styles.expiryDate}>{formatDate(member.expiryDate)}</Text>
           </Text>
+        </View>
 
-          <View style={styles.buttonGroup}>
-            <TouchableOpacity
-              onPress={() => makePhoneCall(member.phone)}
-              style={styles.iconCircleBtn}
-              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-            >
-              <Phone size={16} color={colors.textSecondary} />
-            </TouchableOpacity>
+        <View style={styles.buttonGroup}>
+          {/* Quick Call */}
+          <TouchableOpacity
+            onPress={() => makePhoneCall(member.phone)}
+            style={styles.iconCircleBtn}
+            hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
+            activeOpacity={0.7}
+          >
+            <Phone size={15} color={colors.textSecondary} />
+          </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={handleWhatsAppRemind}
-              style={[styles.iconCircleBtn, styles.whatsappBtn]}
-              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-            >
-              <MessageSquare size={16} color={colors.whatsapp} />
-            </TouchableOpacity>
+          {/* Quick WhatsApp Reminder */}
+          <TouchableOpacity
+            onPress={handleWhatsAppRemind}
+            style={[styles.iconCircleBtn, styles.whatsappBtn]}
+            hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}
+            activeOpacity={0.7}
+          >
+            <MessageSquare size={15} color={colors.whatsapp} />
+          </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={onCollectFee}
-              style={styles.collectFeePill}
-              activeOpacity={0.8}
-            >
-              <CreditCard size={14} color={colors.black} />
-              <Text style={styles.collectFeeText}>FEE</Text>
-            </TouchableOpacity>
+          {/* Quick Collect Fee */}
+          <TouchableOpacity
+            onPress={onCollectFee}
+            style={styles.collectFeePill}
+            activeOpacity={0.8}
+          >
+            <CreditCard size={13} color={colors.white} />
+            <Text style={styles.collectFeeText}>COLLECT</Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => {
-                haptic.light();
-                onPress();
-              }}
-              style={styles.chevronBtn}
-              hitSlop={{ top: 12, bottom: 12, left: 10, right: 10 }}
-              activeOpacity={0.7}
-            >
-              <ChevronRight size={20} color={colors.primary} />
-            </TouchableOpacity>
+          {/* Details Chevron */}
+          <View style={styles.chevronWrap}>
+            <ChevronRight size={18} color={colors.textMuted} />
           </View>
         </View>
-      </TouchableOpacity>
-    </Swipeable>
+      </View>
+    </TouchableOpacity>
   );
 };
 
 export const MemberCard = React.memo(MemberCardComponent);
 
 const styles = StyleSheet.create({
-  swipeContainer: {
-    marginBottom: spacing.md,
-    borderRadius: radius.card,
-    overflow: 'hidden',
-  },
   card: {
-    backgroundColor: colors.surface,
-    padding: spacing.md,
-    borderRadius: radius.card,
+    backgroundColor: '#121724',
+    padding: 14,
+    borderRadius: 18,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
+    borderTopColor: 'rgba(255, 255, 255, 0.16)',
+    marginBottom: spacing.md,
   },
-  topRow: {
+  topSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  avatarWrapper: {
+    position: 'relative',
+    marginRight: 12,
+  },
+  avatarBox: {
+    width: 44,
+    height: 44,
+    borderRadius: 13,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  avatarText: {
+    fontFamily: fontFamilies.heading,
+    fontSize: 16,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  statusIndicatorDot: {
+    position: 'absolute',
+    bottom: -1,
+    right: -1,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: '#121724',
+  },
+  infoBlock: {
+    flex: 1,
+  },
+  nameRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: spacing.xs,
-  },
-  nameBlock: {
-    flex: 1,
-    marginRight: spacing.md,
   },
   memberName: {
     fontFamily: fontFamilies.heading,
-    fontSize: 20,
+    fontSize: 16,
+    fontWeight: '700',
     color: colors.text,
-    letterSpacing: 0.8,
+    letterSpacing: -0.2,
+    flex: 1,
+    marginRight: spacing.sm,
   },
   memberPhone: {
     fontFamily: fontFamilies.bodyRegular,
     fontSize: 13,
-    color: colors.textMuted,
-    marginTop: 1,
+    color: colors.textSecondary,
+    marginTop: 2,
   },
   statusBadge: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 8,
     paddingVertical: 3,
-    borderRadius: radius.xs,
+    borderRadius: radius.pill,
     borderWidth: 1,
   },
   statusDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
+    width: 5,
+    height: 5,
+    borderRadius: 2.5,
     marginRight: 5,
   },
   statusText: {
     fontFamily: fontFamilies.bodyBold,
     fontSize: 10,
-    letterSpacing: 0.5,
+    letterSpacing: 0.4,
   },
   middleRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginVertical: spacing.xs,
+    marginTop: 10,
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255, 255, 255, 0.05)',
+  },
+  planBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.07)',
+    maxWidth: '56%',
   },
   planName: {
     fontFamily: fontFamilies.bodyMedium,
-    fontSize: 13,
+    fontSize: 12,
     color: colors.textSecondary,
+  },
+  planDot: {
+    color: colors.textMuted,
+    marginHorizontal: 4,
+    fontSize: 10,
   },
   planPrice: {
     fontFamily: fontFamilies.bodyBold,
     color: colors.primary,
+    fontSize: 12,
+  },
+  countdownBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.07)',
+    gap: 4,
+  },
+  countdownExpiredBadge: {
+    backgroundColor: 'rgba(255, 59, 78, 0.10)',
+    borderColor: 'rgba(255, 59, 78, 0.25)',
+  },
+  countdownExpiringBadge: {
+    backgroundColor: 'rgba(255, 160, 0, 0.10)',
+    borderColor: 'rgba(255, 160, 0, 0.25)',
   },
   countdownText: {
     fontFamily: fontFamilies.bodyBold,
-    fontSize: 12,
+    fontSize: 11,
     color: colors.textMuted,
   },
   expiredText: {
@@ -334,14 +393,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: spacing.xs,
-    paddingTop: spacing.xs,
+    marginTop: 10,
+    paddingTop: 8,
     borderTopWidth: 1,
-    borderTopColor: colors.borderLight,
+    borderTopColor: 'rgba(255, 255, 255, 0.05)',
+  },
+  expiryDateWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
   },
   expiryDateLabel: {
     fontFamily: fontFamilies.bodyRegular,
-    fontSize: 12,
+    fontSize: 11,
     color: colors.textMuted,
   },
   expiryDate: {
@@ -351,63 +415,39 @@ const styles = StyleSheet.create({
   buttonGroup: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 7,
   },
   iconCircleBtn: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: colors.inputBackground,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: 'rgba(255, 255, 255, 0.09)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: spacing.sm,
   },
   whatsappBtn: {
-    borderColor: `${colors.whatsapp}50`,
+    backgroundColor: 'rgba(37, 211, 102, 0.12)',
+    borderColor: 'rgba(37, 211, 102, 0.25)',
   },
   collectFeePill: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.primary,
-    paddingHorizontal: spacing.sm,
-    height: 28,
+    paddingHorizontal: 10,
+    height: 30,
     borderRadius: radius.pill,
-    marginLeft: spacing.sm,
+    gap: 4,
   },
   collectFeeText: {
-    fontFamily: fontFamilies.heading,
+    fontFamily: fontFamilies.bodyBold,
     fontSize: 11,
-    color: colors.black,
-    marginLeft: 4,
-    letterSpacing: 0.5,
-  },
-  leftAction: {
-    backgroundColor: colors.whatsapp,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 88,
-    borderRadius: radius.card,
-    marginBottom: spacing.md,
-  },
-  rightAction: {
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 88,
-    borderRadius: radius.card,
-    marginBottom: spacing.md,
-  },
-  actionText: {
-    fontFamily: fontFamilies.heading,
-    fontSize: 12,
     color: colors.white,
-    marginTop: 4,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
-  chevronBtn: {
-    paddingLeft: spacing.sm,
-    paddingVertical: 4,
+  chevronWrap: {
+    paddingLeft: 2,
     justifyContent: 'center',
     alignItems: 'center',
   },

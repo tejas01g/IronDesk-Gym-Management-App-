@@ -20,7 +20,7 @@ import {
   CreditCard,
 } from 'lucide-react-native';
 import { addDays, subDays, isToday, format } from 'date-fns';
-import { colors, fontFamilies, radius, spacing } from '../../theme';
+import { colors, fontFamilies, radius, spacing, shadows } from '../../theme';
 import { RootStackParamList } from '../../app/navigation/types';
 import { Member, AttendanceEntry } from '../../types/models';
 import { getMembersPaginated } from '../../services/members';
@@ -302,15 +302,15 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: fontFamilies.heading,
-    fontSize: 28,
+    fontSize: 24,
+    fontWeight: '700',
     color: colors.text,
-    letterSpacing: 1.2,
+    letterSpacing: -0.3,
   },
   subtitle: {
-    fontFamily: fontFamilies.bodyBold,
-    fontSize: 11,
+    fontFamily: fontFamilies.bodyRegular,
+    fontSize: 13,
     color: colors.textMuted,
-    letterSpacing: 1,
     marginTop: 2,
   },
   dateSwitcherWrapper: {
@@ -327,13 +327,16 @@ const styles = StyleSheet.create({
   dateArrowBtn: {
     padding: 6,
     borderRadius: radius.pill,
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   dateTitle: {
     fontFamily: fontFamilies.heading,
     fontSize: 15,
+    fontWeight: '600',
     color: colors.text,
-    letterSpacing: 0.8,
+    letterSpacing: -0.1,
   },
   countBanner: {
     flexDirection: 'row',
@@ -352,11 +355,12 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: colors.textSecondary,
     marginLeft: spacing.sm,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   countHighlight: {
     color: colors.primary,
     fontSize: 16,
+    fontWeight: '700',
   },
   searchSection: {
     paddingHorizontal: spacing.lg,
@@ -383,10 +387,13 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
+    ...shadows.card,
   },
   presentRow: {
     borderColor: colors.primary,
-    backgroundColor: '#15151BE0',
+    backgroundColor: 'rgba(255, 85, 56, 0.12)',
+    borderTopColor: colors.primary,
   },
   memberInfo: {
     flex: 1,
@@ -394,15 +401,16 @@ const styles = StyleSheet.create({
   },
   memberName: {
     fontFamily: fontFamilies.heading,
-    fontSize: 18,
+    fontSize: 16,
+    fontWeight: '600',
     color: colors.text,
-    letterSpacing: 0.5,
+    letterSpacing: -0.2,
   },
   expiredBadge: {
     backgroundColor: `${colors.danger}20`,
     paddingHorizontal: 6,
     paddingVertical: 2,
-    borderRadius: radius.xs,
+    borderRadius: radius.pill,
     borderWidth: 1,
     borderColor: colors.danger,
     marginLeft: spacing.xs,
@@ -422,9 +430,10 @@ const styles = StyleSheet.create({
     height: 40,
     minWidth: 90,
     borderRadius: radius.pill,
-    backgroundColor: colors.inputBackground,
-    borderWidth: 1.5,
+    backgroundColor: colors.glassPill,
+    borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: spacing.md,
@@ -432,22 +441,23 @@ const styles = StyleSheet.create({
   checkInToggleBtnActive: {
     backgroundColor: colors.primary,
     borderColor: colors.primary,
+    borderTopColor: colors.primary,
   },
   toggleContent: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   toggleActiveText: {
-    fontFamily: fontFamilies.heading,
-    fontSize: 14,
-    color: colors.black,
+    fontFamily: fontFamilies.bodyBold,
+    fontSize: 12,
+    color: colors.white,
     marginLeft: 3,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   toggleInactiveText: {
-    fontFamily: fontFamilies.heading,
-    fontSize: 13,
+    fontFamily: fontFamilies.bodyBold,
+    fontSize: 12,
     color: colors.textMuted,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
 });

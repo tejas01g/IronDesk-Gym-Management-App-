@@ -9,12 +9,11 @@ import {
   ScrollView,
   StatusBar,
   Alert,
-  Animated,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Dumbbell, ArrowLeft, RefreshCw, ShieldCheck } from 'lucide-react-native';
-import { colors, fontFamilies, radius, spacing } from '../../theme';
+import { colors, fontFamilies, radius, spacing, shadows } from '../../theme';
 import { RootStackParamList } from '../../app/navigation/types';
 import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
@@ -39,35 +38,16 @@ export const LoginScreen: React.FC = () => {
   const [phoneError, setPhoneError] = useState('');
   const [step, setStep] = useState<'PHONE' | 'OTP'>('PHONE');
 
-  // otpSending: Firebase is doing Play Integrity check + sending SMS in background
-  const [otpSending, setOtpSending] = useState(false);
   // loading: OTP verify call in progress
   const [loading, setLoading] = useState(false);
 
   const [confirmationResult, setLocalConfirmation] =
     useState<FirebaseAuthTypes.ConfirmationResult | null>(null);
+  const confirmationPromiseRef = useRef<Promise<FirebaseAuthTypes.ConfirmationResult> | null>(null);
 
   // Resend OTP countdown
   const [resendTimer, setResendTimer] = useState(30);
   const [canResend, setCanResend] = useState(false);
-
-  // Pulse animation for "Sending OTP…" indicator
-  const pulseAnim = useRef(new Animated.Value(1)).current;
-
-  useEffect(() => {
-    if (otpSending) {
-      const loop = Animated.loop(
-        Animated.sequence([
-          Animated.timing(pulseAnim, { toValue: 0.35, duration: 600, useNativeDriver: true }),
-          Animated.timing(pulseAnim, { toValue: 1, duration: 600, useNativeDriver: true }),
-        ])
-      );
-      loop.start();
-      return () => loop.stop();
-    } else {
-      pulseAnim.setValue(1);
-    }
-  }, [otpSending, pulseAnim]);
 
   useEffect(() => {
     let interval: ReturnType<typeof setInterval> | null = null;
@@ -87,7 +67,7 @@ export const LoginScreen: React.FC = () => {
     };
   }, [step, canResend]);
 
-  const handleSendOtp = async () => {
+  const handleSendOtp = () => {
     setPhoneError('');
     if (!isValidIndianPhone(phoneNumber)) {
       setPhoneError('Please enter a valid 10-digit Indian mobile number');
@@ -95,56 +75,67 @@ export const LoginScreen: React.FC = () => {
       return;
     }
 
-    // ── Optimistic UI: jump to OTP screen instantly ──
+    // Immediately display Enter OTP screen in UI
     setLocalConfirmation(null);
     setStep('OTP');
     setResendTimer(30);
     setCanResend(false);
-    setOtpSending(true);
+    haptic.light();
 
-    // ── Firebase auth (Play Integrity + SMS) runs silently in background ──
-    try {
-      const confirmation = await sendPhoneOtp(phoneNumber);
-      setLocalConfirmation(confirmation);
-      setConfirmation(confirmation);
-      haptic.success();
-    } catch (error: any) {
-      console.warn('[LoginScreen] Error sending OTP:', error);
-      // Snap back to phone step and show the error
-      setStep('PHONE');
-      Alert.alert(
-        'OTP Failed',
-        error?.message || 'Could not send OTP. Please check the phone number and try again.'
-      );
-      haptic.error();
-    } finally {
-      setOtpSending(false);
-    }
+    // Sending OTP runs silently in background / backend
+    const promise = sendPhoneOtp(phoneNumber);
+    confirmationPromiseRef.current = promise;
+
+    promise
+      .then((confirmation) => {
+        setLocalConfirmation(confirmation);
+        setConfirmation(confirmation);
+      })
+      .catch((error: any) => {
+        console.warn('[LoginScreen] Error sending OTP:', error);
+        setStep('PHONE');
+        Alert.alert(
+          'OTP Failed',
+          error?.message || 'Could not send OTP. Please check the phone number and try again.'
+        );
+        haptic.error();
+      });
   };
 
-  const handleResendOtp = async () => {
-    if (!canResend || loading || otpSending) return;
+  const handleResendOtp = () => {
+    if (!canResend || loading) return;
     setLocalConfirmation(null);
-    setOtpSending(true);
     setResendTimer(30);
     setCanResend(false);
-    try {
-      const confirmation = await sendPhoneOtp(phoneNumber);
-      setLocalConfirmation(confirmation);
-      setConfirmation(confirmation);
-      haptic.success();
-    } catch (error: any) {
-      Alert.alert('Resend Error', error?.message || 'Unable to resend OTP.');
-    } finally {
-      setOtpSending(false);
-    }
+    haptic.light();
+
+    const promise = sendPhoneOtp(phoneNumber);
+    confirmationPromiseRef.current = promise;
+
+    promise
+      .then((confirmation) => {
+        setLocalConfirmation(confirmation);
+        setConfirmation(confirmation);
+        haptic.success();
+      })
+      .catch((error: any) => {
+        Alert.alert('Resend Error', error?.message || 'Unable to resend OTP.');
+      });
   };
 
   const handleVerifyOtp = async (code: string) => {
-    if (!confirmationResult || loading || otpSending) return;
+    if (loading) return;
     setLoading(true);
     try {
-      const userCredential = await confirmOtpCode(confirmationResult, code);
+      let confirmation = confirmationResult;
+      if (!confirmation && confirmationPromiseRef.current) {
+        confirmation = await confirmationPromiseRef.current;
+      }
+      if (!confirmation) {
+        throw new Error('Please wait while OTP is being sent, then try again.');
+      }
+
+      const userCredential = await confirmOtpCode(confirmation, code);
       if (!userCredential) {
         throw new Error('Verification failed. Please try again.');
       }
@@ -192,7 +183,6 @@ export const LoginScreen: React.FC = () => {
             <TouchableOpacity
               style={styles.backButton}
               onPress={() => {
-                if (otpSending) return; // don't navigate back while OTP is in flight
                 haptic.light();
                 setStep('PHONE');
                 setLocalConfirmation(null);
@@ -210,12 +200,12 @@ export const LoginScreen: React.FC = () => {
               <Dumbbell size={36} color={colors.primary} strokeWidth={2.4} />
             </View>
             <Text style={styles.title}>
-              {step === 'PHONE' ? 'ENTER YOUR MOBILE' : 'VERIFY OTP'}
+              {step === 'PHONE' ? 'ENTER YOUR MOBILE' : 'ENTER OTP'}
             </Text>
             <Text style={styles.subtitle}>
               {step === 'PHONE'
                 ? 'We will send a 6-digit verification code to register or login to your gym.'
-                : `Code sent to +91 ${phoneNumber}`}
+                : `Enter the 6-digit code sent to +91 ${phoneNumber}`}
             </Text>
           </View>
 
@@ -258,48 +248,21 @@ export const LoginScreen: React.FC = () => {
           ) : (
             /* Step: OTP Verification */
             <View style={styles.formSection}>
-
-              {/* Background OTP sending indicator — pulsing pill */}
-              {otpSending && (
-                <Animated.View style={[styles.sendingPill, { opacity: pulseAnim }]}>
-                  <View style={styles.sendingDot} />
-                  <Text style={styles.sendingText}>Sending OTP to your phone…</Text>
-                </Animated.View>
-              )}
-
-              {/* OTP boxes — locked until confirmationResult is ready */}
+              {/* Clean OTP input directly ready for entry */}
               <OTPInput
                 length={6}
                 onComplete={handleVerifyOtp}
-                disabled={loading || otpSending || !confirmationResult}
+                disabled={loading}
               />
-
-              {/* Subtle hint while OTP input is locked */}
-              {otpSending && (
-                <Text style={styles.waitHint}>
-                  Enter the code once you receive the SMS
-                </Text>
-              )}
 
               <View style={styles.resendRow}>
                 {canResend ? (
                   <TouchableOpacity
                     onPress={handleResendOtp}
                     style={styles.resendButton}
-                    disabled={otpSending}
                   >
-                    <RefreshCw
-                      size={16}
-                      color={otpSending ? colors.textDisabled : colors.primary}
-                    />
-                    <Text
-                      style={[
-                        styles.resendActiveText,
-                        otpSending && { color: colors.textDisabled },
-                      ]}
-                    >
-                      RESEND OTP
-                    </Text>
+                    <RefreshCw size={16} color={colors.primary} />
+                    <Text style={styles.resendActiveText}>RESEND OTP</Text>
                   </TouchableOpacity>
                 ) : (
                   <Text style={styles.resendWaitingText}>
@@ -310,7 +273,6 @@ export const LoginScreen: React.FC = () => {
 
               <TouchableOpacity
                 onPress={() => {
-                  if (otpSending) return;
                   setStep('PHONE');
                   setLocalConfirmation(null);
                 }}
@@ -346,12 +308,13 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: radius.pill,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.glassPill,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: spacing.md,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
   },
   brandHeader: {
     alignItems: 'center',
@@ -361,18 +324,21 @@ const styles = StyleSheet.create({
     width: 72,
     height: 72,
     borderRadius: 22,
-    backgroundColor: colors.surface,
-    borderWidth: 2,
+    backgroundColor: colors.glassPill,
+    borderWidth: 1,
     borderColor: colors.primary,
+    borderTopColor: colors.glassBorderLight,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: spacing.lg,
+    ...shadows.card,
   },
   title: {
     fontFamily: fontFamilies.heading,
-    fontSize: 32,
+    fontSize: 26,
+    fontWeight: '700',
     color: colors.text,
-    letterSpacing: 1.2,
+    letterSpacing: -0.3,
     textAlign: 'center',
   },
   subtitle: {
@@ -389,10 +355,10 @@ const styles = StyleSheet.create({
     marginTop: spacing.md,
   },
   countryCodeBadge: {
-    backgroundColor: colors.surface,
+    backgroundColor: colors.glassPill,
     paddingHorizontal: spacing.sm,
     paddingVertical: 4,
-    borderRadius: radius.xs,
+    borderRadius: radius.pill,
     borderRightWidth: 1,
     borderColor: colors.border,
     marginRight: spacing.xs,
@@ -414,40 +380,6 @@ const styles = StyleSheet.create({
     color: colors.textMuted,
     marginLeft: spacing.xs,
   },
-  // ── Sending indicator ──
-  sendingPill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'center',
-    backgroundColor: colors.primaryMuted,
-    borderWidth: 1,
-    borderColor: colors.borderAccent,
-    borderRadius: radius.pill,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-    marginBottom: spacing.lg,
-  },
-  sendingDot: {
-    width: 7,
-    height: 7,
-    borderRadius: 4,
-    backgroundColor: colors.primary,
-    marginRight: spacing.xs,
-  },
-  sendingText: {
-    fontFamily: fontFamilies.bodyRegular,
-    fontSize: 13,
-    color: colors.primary,
-    letterSpacing: 0.2,
-  },
-  waitHint: {
-    fontFamily: fontFamilies.bodyRegular,
-    fontSize: 12,
-    color: colors.textMuted,
-    textAlign: 'center',
-    marginTop: spacing.xs,
-    marginBottom: spacing.sm,
-  },
   resendRow: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -458,11 +390,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   resendActiveText: {
-    fontFamily: fontFamilies.heading,
-    fontSize: 16,
+    fontFamily: fontFamilies.bodyBold,
+    fontSize: 14,
     color: colors.primary,
     marginLeft: spacing.xs,
-    letterSpacing: 1,
+    letterSpacing: 0.3,
   },
   resendWaitingText: {
     fontFamily: fontFamilies.bodyRegular,
@@ -478,9 +410,9 @@ const styles = StyleSheet.create({
     padding: spacing.md,
   },
   changePhoneText: {
-    fontFamily: fontFamilies.heading,
-    fontSize: 14,
+    fontFamily: fontFamilies.bodyBold,
+    fontSize: 13,
     color: colors.textMuted,
-    letterSpacing: 1,
+    letterSpacing: 0.2,
   },
 });

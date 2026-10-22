@@ -331,9 +331,10 @@ const styles = StyleSheet.create({
   },
   memberName: {
     fontFamily: fontFamilies.heading,
-    fontSize: 26,
+    fontSize: 22,
+    fontWeight: '700',
     color: colors.text,
-    letterSpacing: 1,
+    letterSpacing: -0.3,
   },
   memberPhone: {
     fontFamily: fontFamilies.bodyRegular,
@@ -346,7 +347,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: radius.xs,
+    borderRadius: radius.pill,
     borderWidth: 1,
   },
   statusDot: {
@@ -358,7 +359,7 @@ const styles = StyleSheet.create({
   statusText: {
     fontFamily: fontFamilies.bodyBold,
     fontSize: 11,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   actionButtonsRow: {
     flexDirection: 'row',
@@ -367,7 +368,7 @@ const styles = StyleSheet.create({
   contactBtn: {
     flex: 1,
     height: 44,
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
     borderRadius: radius.card,
     flexDirection: 'row',
     alignItems: 'center',
@@ -375,16 +376,17 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
   },
   whatsappContactBtn: {
-    borderColor: `${colors.whatsapp}40`,
+    borderColor: `${colors.whatsapp}50`,
   },
   contactBtnText: {
-    fontFamily: fontFamilies.heading,
-    fontSize: 14,
+    fontFamily: fontFamilies.bodyBold,
+    fontSize: 13,
     color: colors.text,
     marginLeft: spacing.xs,
-    letterSpacing: 0.8,
+    letterSpacing: 0.2,
   },
   planCard: {
     marginBottom: spacing.lg,
@@ -398,25 +400,30 @@ const styles = StyleSheet.create({
     fontFamily: fontFamilies.bodyBold,
     fontSize: 11,
     color: colors.textMuted,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   planHeading: {
     fontFamily: fontFamilies.heading,
-    fontSize: 22,
+    fontSize: 18,
+    fontWeight: '600',
     color: colors.text,
-    letterSpacing: 0.8,
+    letterSpacing: -0.2,
   },
   planAmount: {
-    fontFamily: fontFamilies.heading,
-    fontSize: 26,
+    fontFamily: fontFamilies.statNumber,
+    fontSize: 24,
+    fontWeight: '700',
     color: colors.primary,
   },
   dateInfoBox: {
     flexDirection: 'row',
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
     padding: spacing.md,
     borderRadius: radius.card,
     marginVertical: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
   },
   dateBlock: {
     flex: 1,
@@ -457,8 +464,9 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontFamily: fontFamilies.heading,
     fontSize: 16,
-    color: colors.primary,
-    letterSpacing: 0.8,
+    fontWeight: '700',
+    color: colors.text,
+    letterSpacing: -0.2,
     marginBottom: spacing.sm,
   },
   gridContainer: {
@@ -470,13 +478,14 @@ const styles = StyleSheet.create({
   gridDayBox: {
     width: 32,
     height: 32,
-    borderRadius: 6,
-    backgroundColor: colors.inputBackground,
+    borderRadius: 8,
+    backgroundColor: colors.glassPill,
     alignItems: 'center',
     justifyContent: 'center',
     margin: 3,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
   },
   gridDayPresent: {
     backgroundColor: `${colors.primary}25`,

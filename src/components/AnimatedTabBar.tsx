@@ -102,9 +102,9 @@ const TabItem: React.FC<TabItemProps> = ({
     >
       <Animated.View style={[styles.iconContainer, animatedIconStyle]}>
         <IconComponent
-          size={22}
-          color={isFocused ? colors.primary : colors.textMuted}
-          strokeWidth={isFocused ? 2.5 : 2}
+          size={21}
+          color={isFocused ? colors.text : colors.textMuted}
+          strokeWidth={isFocused ? 2.4 : 1.8}
         />
       </Animated.View>
       {isFocused ? (
@@ -145,7 +145,7 @@ export const AnimatedTabBar: React.FC<BottomTabBarProps> = ({
   return (
     <View style={[styles.outerContainer, { bottom: bottomMargin }]}>
       <View style={styles.barContainer}>
-        {/* Gliding Lime Indicator */}
+        {/* Liquid Glass Frosted Indicator */}
         <Animated.View style={[styles.indicatorWrapper, animatedIndicatorStyle]}>
           <View style={styles.indicatorPill} />
         </Animated.View>
@@ -202,10 +202,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: TAB_BAR_WIDTH,
     height: 64,
-    backgroundColor: '#15151BF2', // card surface with high opacity
+    backgroundColor: colors.floatingDockBg,
     borderRadius: radius.pill,
-    borderWidth: 1.5,
-    borderColor: colors.border,
+    borderWidth: 1,
+    borderColor: colors.floatingDockBorder,
+    borderTopColor: colors.glassHighlight,
     alignItems: 'center',
     ...shadows.floatingBar,
   },
@@ -216,12 +217,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   indicatorPill: {
-    width: 44,
-    height: 38,
+    width: 48,
+    height: 42,
     borderRadius: radius.pill,
-    backgroundColor: colors.primarySoft,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
     borderWidth: 1,
-    borderColor: colors.primary,
+    borderColor: 'rgba(255, 255, 255, 0.14)',
   },
   tabButton: {
     flex: 1,
@@ -236,8 +237,8 @@ const styles = StyleSheet.create({
   activeLabel: {
     fontFamily: fontFamilies.tabLabel,
     fontSize: 10,
-    color: colors.primary,
+    color: colors.text,
     marginTop: 2,
-    letterSpacing: 0.3,
+    letterSpacing: 0.2,
   },
 });

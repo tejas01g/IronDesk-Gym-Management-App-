@@ -69,19 +69,19 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   label: {
-    fontFamily: fontFamilies.bodySemiBold,
+    fontFamily: fontFamilies.bodyMedium,
     fontSize: 13,
     color: colors.textSecondary,
     marginBottom: spacing.xs,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 0.2,
   },
   inputContainer: {
     height: 52,
     backgroundColor: colors.inputBackground,
     borderRadius: radius.card,
-    borderWidth: 1.5,
+    borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: spacing.md,
@@ -89,15 +89,17 @@ const styles = StyleSheet.create({
   inputFocused: {
     borderColor: colors.primary,
     backgroundColor: colors.surface,
+    borderTopColor: colors.primary,
   },
   inputError: {
     borderColor: colors.danger,
+    borderTopColor: colors.danger,
   },
   input: {
     flex: 1,
     color: colors.text,
     fontFamily: fontFamilies.bodyRegular,
-    fontSize: 16,
+    fontSize: 15,
     height: '100%',
   },
   prefixContainer: {

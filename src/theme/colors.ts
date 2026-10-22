@@ -1,45 +1,58 @@
 export const colors = {
-  // Base backgrounds
-  background: '#0B0B0F',
-  surface: '#15151B',
-  elevated: '#1D1D26',
-  card: '#15151B',
-  inputBackground: '#121217',
+  // Base backgrounds - deep midnight obsidian with atmospheric slate undertone
+  background: '#080A10',
+  surface: 'rgba(22, 28, 42, 0.65)',
+  surfaceSolid: '#121722',
+  elevated: 'rgba(28, 36, 54, 0.82)',
+  elevatedSolid: '#182030',
+  card: 'rgba(20, 26, 40, 0.65)',
+  inputBackground: 'rgba(16, 21, 32, 0.75)',
+
+  // Liquid Glass Specific Tokens
+  glassBg: 'rgba(22, 28, 42, 0.65)',
+  glassBorder: 'rgba(255, 255, 255, 0.09)',
+  glassBorderLight: 'rgba(255, 255, 255, 0.14)',
+  glassHighlight: 'rgba(255, 255, 255, 0.20)',
+  glassPill: 'rgba(255, 255, 255, 0.06)',
+  glassPillBorder: 'rgba(255, 255, 255, 0.10)',
+  floatingDockBg: 'rgba(18, 24, 36, 0.85)',
+  floatingDockBorder: 'rgba(255, 255, 255, 0.10)',
+  ambientGlow: 'rgba(20, 32, 52, 0.50)',
 
   // Borders
-  border: '#262633',
-  borderLight: '#323242',
-  borderAccent: '#C6FF0033',
+  border: 'rgba(255, 255, 255, 0.09)',
+  borderLight: 'rgba(255, 255, 255, 0.14)',
+  borderAccent: 'rgba(255, 85, 56, 0.35)',
 
-  // Primary Accent: Electric Lime
-  primary: '#C6FF00',
-  primaryDark: '#9ECC00',
-  primarySoft: 'rgba(198, 255, 0, 0.12)',
-  primaryMuted: 'rgba(198, 255, 0, 0.08)',
+  // Primary Accent: Warm Vivid Coral Flame (from the image streak & workouts icon)
+  primary: '#FF5538',
+  primaryDark: '#E04026',
+  primarySoft: 'rgba(255, 85, 56, 0.14)',
+  primaryMuted: 'rgba(255, 85, 56, 0.08)',
 
-  // Secondary Accent: Hot Orange (Warnings / Expiring in 7 days)
-  secondary: '#FF5A1F',
-  secondaryDark: '#D94812',
-  secondarySoft: 'rgba(255, 90, 31, 0.12)',
+  // Secondary Accent: Warm Amber (Hourglass duration / warnings)
+  secondary: '#FFA000',
+  secondaryDark: '#E68A00',
+  secondarySoft: 'rgba(255, 160, 0, 0.14)',
 
   // Feedback Colors
   danger: '#FF3B4E',
-  dangerSoft: 'rgba(255, 59, 78, 0.12)',
-  success: '#2DD881',
-  successSoft: 'rgba(45, 216, 129, 0.12)',
-  info: '#38BDF8',
-  infoSoft: 'rgba(56, 189, 248, 0.12)',
+  dangerSoft: 'rgba(255, 59, 78, 0.14)',
+  success: '#22C55E',
+  successSoft: 'rgba(34, 197, 94, 0.14)',
+  info: '#00B2FF',
+  infoSoft: 'rgba(0, 178, 255, 0.14)',
 
   // Text Colors
-  text: '#F5F5F7',
-  textSecondary: '#C4C4D0',
-  textMuted: '#8A8A9A',
-  textDisabled: '#525260',
-  textInverse: '#0B0B0F',
+  text: '#FFFFFF',
+  textSecondary: '#94A3B8',
+  textMuted: '#64748B',
+  textDisabled: '#475569',
+  textInverse: '#080A10',
 
   // Status mapping
-  statusActive: '#2DD881',
-  statusExpiring: '#FF5A1F',
+  statusActive: '#22C55E',
+  statusExpiring: '#FFA000',
   statusExpired: '#FF3B4E',
 
   // Special Accents
@@ -49,7 +62,7 @@ export const colors = {
   whatsappDark: '#1EAA52',
 
   // Overlay / Backdrop
-  backdrop: 'rgba(0, 0, 0, 0.75)',
+  backdrop: 'rgba(4, 6, 10, 0.80)',
   transparent: 'transparent',
   white: '#FFFFFF',
   black: '#000000',

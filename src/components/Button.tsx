@@ -113,7 +113,7 @@ export const Button: React.FC<ButtonProps> = ({
 
 const styles = StyleSheet.create({
   baseContainer: {
-    height: 54,
+    height: 52,
     borderRadius: radius.card,
     flexDirection: 'row',
     alignItems: 'center',
@@ -127,11 +127,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   secondaryContainer: {
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.glassPill,
+    borderWidth: 1,
+    borderColor: colors.glassBorderLight,
   },
   outlineContainer: {
-    backgroundColor: colors.transparent,
-    borderWidth: 1.5,
+    backgroundColor: colors.glassPill,
+    borderWidth: 1,
     borderColor: colors.primary,
   },
   ghostContainer: {
@@ -143,19 +145,19 @@ const styles = StyleSheet.create({
   disabledContainer: {
     backgroundColor: colors.elevated,
     borderColor: colors.border,
-    opacity: 0.6,
+    opacity: 0.5,
   },
   baseText: {
-    fontFamily: fontFamilies.heading,
-    fontSize: 18,
-    letterSpacing: 1,
-    textTransform: 'uppercase',
+    fontFamily: fontFamilies.bodyBold,
+    fontSize: 16,
+    fontWeight: '600',
+    letterSpacing: 0.3,
   },
   primaryText: {
-    color: colors.black,
+    color: colors.white,
   },
   secondaryText: {
-    color: colors.white,
+    color: colors.text,
   },
   outlineText: {
     color: colors.primary,

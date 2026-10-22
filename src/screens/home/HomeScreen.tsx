@@ -26,7 +26,7 @@ import {
   MessageSquare,
   ChevronRight,
 } from 'lucide-react-native';
-import { colors, fontFamilies, radius, spacing } from '../../theme';
+import { colors, fontFamilies, radius, spacing, shadows } from '../../theme';
 import { RootStackParamList } from '../../app/navigation/types';
 import { Member } from '../../types/models';
 import { getExpiringMembers, getOverdueMembers } from '../../services/members';
@@ -429,9 +429,10 @@ const styles = StyleSheet.create({
   },
   gymName: {
     fontFamily: fontFamilies.heading,
-    fontSize: 26,
+    fontSize: 22,
+    fontWeight: '700',
     color: colors.text,
-    letterSpacing: 1,
+    letterSpacing: -0.3,
   },
   ownerSubtitle: {
     fontFamily: fontFamilies.bodyRegular,
@@ -447,18 +448,19 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.glassPill,
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: spacing.sm,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
   },
   badgeDot: {
     position: 'absolute',
     top: -2,
     right: -2,
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.primary,
     borderRadius: 10,
     minWidth: 18,
     height: 18,
@@ -475,7 +477,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: colors.primarySoft,
-    paddingVertical: 8,
+    paddingVertical: 10,
     paddingHorizontal: spacing.md,
     borderRadius: radius.card,
     marginBottom: spacing.md,
@@ -487,7 +489,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: colors.primary,
     marginLeft: spacing.xs,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   statsGrid: {
     marginVertical: spacing.xs,
@@ -502,8 +504,9 @@ const styles = StyleSheet.create({
   sectionHeading: {
     fontFamily: fontFamilies.heading,
     fontSize: 16,
-    color: colors.textSecondary,
-    letterSpacing: 0.8,
+    fontWeight: '700',
+    color: colors.text,
+    letterSpacing: -0.2,
     marginBottom: spacing.sm,
   },
   actionButtonsGrid: {
@@ -519,6 +522,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
+    ...shadows.card,
   },
   actionIconBadge: {
     width: 40,
@@ -529,10 +534,10 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xs,
   },
   actionCardText: {
-    fontFamily: fontFamilies.heading,
+    fontFamily: fontFamilies.bodyBold,
     fontSize: 12,
     color: colors.text,
-    letterSpacing: 0.5,
+    letterSpacing: 0.2,
   },
   listSection: {
     marginTop: spacing.md,
@@ -544,10 +549,10 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   seeAllText: {
-    fontFamily: fontFamilies.heading,
-    fontSize: 12,
+    fontFamily: fontFamilies.bodyBold,
+    fontSize: 13,
     color: colors.primary,
-    letterSpacing: 0.5,
+    letterSpacing: 0.2,
   },
   emptyCard: {
     flexDirection: 'row',
@@ -571,8 +576,10 @@ const styles = StyleSheet.create({
   },
   rowName: {
     fontFamily: fontFamilies.heading,
-    fontSize: 18,
+    fontSize: 16,
+    fontWeight: '600',
     color: colors.text,
+    letterSpacing: -0.2,
   },
   rowPlan: {
     fontFamily: fontFamilies.bodyRegular,
@@ -602,7 +609,7 @@ const styles = StyleSheet.create({
   remindBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
     paddingHorizontal: spacing.md,
     paddingVertical: 6,
     borderRadius: radius.pill,
@@ -610,11 +617,11 @@ const styles = StyleSheet.create({
     borderColor: `${colors.whatsapp}40`,
   },
   remindBtnText: {
-    fontFamily: fontFamilies.heading,
+    fontFamily: fontFamilies.bodyBold,
     fontSize: 11,
     color: colors.whatsapp,
     marginLeft: 4,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   payBtn: {
     flexDirection: 'row',
@@ -625,10 +632,10 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
   },
   payBtnText: {
-    fontFamily: fontFamilies.heading,
+    fontFamily: fontFamilies.bodyBold,
     fontSize: 11,
-    color: colors.black,
+    color: colors.white,
     marginLeft: 4,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
 });

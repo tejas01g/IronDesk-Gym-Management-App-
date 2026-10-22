@@ -24,7 +24,7 @@ import {
   X,
   ShieldCheck,
 } from 'lucide-react-native';
-import { colors, fontFamilies, radius, spacing } from '../../theme';
+import { colors, fontFamilies, radius, spacing, shadows } from '../../theme';
 import { RootStackParamList } from '../../app/navigation/types';
 import { APP_CONFIG } from '../../config/app';
 import { updateGymProfile } from '../../services/gym';
@@ -315,15 +315,15 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: fontFamilies.heading,
-    fontSize: 28,
+    fontSize: 24,
+    fontWeight: '700',
     color: colors.text,
-    letterSpacing: 1.2,
+    letterSpacing: -0.3,
   },
   subtitle: {
-    fontFamily: fontFamilies.bodyBold,
-    fontSize: 11,
+    fontFamily: fontFamilies.bodyRegular,
+    fontSize: 13,
     color: colors.textMuted,
-    letterSpacing: 1,
     marginTop: 2,
   },
   scrollContent: {
@@ -343,17 +343,19 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
     alignItems: 'center',
     justifyContent: 'center',
   },
   gymNameText: {
     fontFamily: fontFamilies.heading,
-    fontSize: 20,
+    fontSize: 18,
+    fontWeight: '600',
     color: colors.text,
-    letterSpacing: 0.8,
+    letterSpacing: -0.2,
   },
   ownerText: {
     fontFamily: fontFamilies.bodyBold,
@@ -379,7 +381,9 @@ const styles = StyleSheet.create({
   editIconBtn: {
     padding: 8,
     borderRadius: radius.pill,
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   subscriptionCard: {
     marginBottom: spacing.lg,
@@ -409,6 +413,7 @@ const styles = StyleSheet.create({
   subTitle: {
     fontFamily: fontFamilies.heading,
     fontSize: 18,
+    fontWeight: '600',
     color: colors.text,
   },
   subExpiry: {
@@ -423,10 +428,10 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
   },
   renewPlanText: {
-    fontFamily: fontFamilies.heading,
+    fontFamily: fontFamilies.bodyBold,
     fontSize: 12,
     color: colors.black,
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
   },
   menuSection: {
     marginBottom: spacing.lg,
@@ -435,7 +440,7 @@ const styles = StyleSheet.create({
     fontFamily: fontFamilies.bodyBold,
     fontSize: 11,
     color: colors.textMuted,
-    letterSpacing: 0.8,
+    letterSpacing: 0.5,
     marginBottom: spacing.xs,
     paddingLeft: spacing.xs,
   },
@@ -449,6 +454,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xs,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
+    ...shadows.card,
   },
   menuLeft: {
     flexDirection: 'row',
@@ -458,7 +465,9 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 19,
-    backgroundColor: colors.inputBackground,
+    backgroundColor: colors.glassPill,
+    borderWidth: 1,
+    borderColor: colors.border,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -502,13 +511,15 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modalSheet: {
-    backgroundColor: colors.surface,
-    borderTopLeftRadius: radius.cardLarge,
-    borderTopRightRadius: radius.cardLarge,
+    backgroundColor: colors.elevated,
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
     padding: spacing.xl,
     paddingBottom: spacing.xxxl,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassHighlight,
+    ...shadows.cardElevated,
   },
   modalHeader: {
     flexDirection: 'row',
@@ -518,8 +529,9 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontFamily: fontFamilies.heading,
-    fontSize: 22,
+    fontSize: 20,
+    fontWeight: '700',
     color: colors.text,
-    letterSpacing: 1,
+    letterSpacing: -0.2,
   },
 });

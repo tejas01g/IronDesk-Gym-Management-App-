@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
     ...shadows.card,
   },
   surface: {
@@ -65,6 +66,7 @@ const styles = StyleSheet.create({
   },
   elevated: {
     backgroundColor: colors.elevated,
+    borderTopColor: colors.glassHighlight,
     ...shadows.cardElevated,
   },
 });

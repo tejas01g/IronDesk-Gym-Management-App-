@@ -55,21 +55,27 @@ export const Skeleton: React.FC<SkeletonProps> = ({
 export const MemberCardSkeleton: React.FC = () => {
   return (
     <View style={styles.cardSkeleton}>
-      <View style={styles.rowBetween}>
-        <View>
-          <Skeleton width={140} height={20} style={{ marginBottom: 6 }} />
-          <Skeleton width={90} height={14} />
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <Skeleton width={44} height={44} borderRadius={13} style={{ marginRight: 12 }} />
+        <View style={{ flex: 1 }}>
+          <View style={styles.rowBetween}>
+            <Skeleton width={130} height={18} style={{ marginBottom: 4 }} />
+            <Skeleton width={55} height={20} borderRadius={radius.pill} />
+          </View>
+          <Skeleton width={90} height={13} />
         </View>
-        <Skeleton width={60} height={20} borderRadius={radius.xs} />
       </View>
-      <View style={[styles.rowBetween, { marginVertical: spacing.sm }]}>
-        <Skeleton width={110} height={16} />
-        <Skeleton width={80} height={16} />
+      <View style={[styles.rowBetween, { marginTop: 12, paddingTop: 10, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)' }]}>
+        <Skeleton width={120} height={22} borderRadius={8} />
+        <Skeleton width={100} height={22} borderRadius={8} />
       </View>
-      <Skeleton width="100%" height={1} style={{ marginVertical: spacing.xs }} />
-      <View style={styles.rowBetween}>
-        <Skeleton width={120} height={14} />
-        <Skeleton width={70} height={26} borderRadius={radius.pill} />
+      <View style={[styles.rowBetween, { marginTop: 10, paddingTop: 8, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.05)' }]}>
+        <Skeleton width={110} height={14} />
+        <View style={{ flexDirection: 'row', gap: 7 }}>
+          <Skeleton width={32} height={32} borderRadius={16} />
+          <Skeleton width={32} height={32} borderRadius={16} />
+          <Skeleton width={70} height={30} borderRadius={radius.pill} />
+        </View>
       </View>
     </View>
   );
@@ -86,6 +92,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
     borderWidth: 1,
     borderColor: colors.border,
+    borderTopColor: colors.glassBorderLight,
   },
   rowBetween: {
     flexDirection: 'row',
